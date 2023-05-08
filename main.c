@@ -16,7 +16,7 @@ typedef struct {
 
 int selectMenu(){
     int menu;
-    printf("\n*** 환자 리스트 ***\n");
+    printf("\n*** 병원 환자 관리 시스템 ***\n");
     printf("1. 조회\n");
     printf("2. 추가\n");
     printf("3. 수정\n");
