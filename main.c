@@ -62,11 +62,11 @@ void readInfo(Patient p){
 
 // 환자 정보 조회 리스트 (최대 20명)
 void listInfo(Patient *p[], int count){
-    printf("=====================================환자 진료 예약 리스트=====================================\n");
+    printf("===================================== 환자 진료 예약 리스트 =====================================\n");
     printf("%s %s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n", "No", "Name ", "Sex", "Age", "Birthday   ", "PhoneNumber  ", "Address", "Department", "Symptom");
     printf("==============================================================================================\n");
     for(int i=0; i<count; i++) {
-        if(p[i] == NULL) continue;
+        if(p[i]->birthday == -1) continue;
         printf("%2d ", i+1);
         readInfo(*p[i]);
     } printf("\n");
