@@ -55,6 +55,28 @@ int selectNum() {
     return num;
 }
 
+int OnereadInfo(Patient p, int infonum) {
+    if(p.birthday == -1) {
+        return 0;
+    }
+    printf("\n*** %d번 환자의 세부 정보 ***\n", infonum);
+    printf("----------------------------------------------------------------------------------------------\n");
+    printf("%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n", "Name ", "Sex", "Age", "Birthday   ", "PhoneNumber  ", "Address", "Department", "Symptom");
+    printf("----------------------------------------------------------------------------------------------\n");
+    printf("%s\t%s\t%d\t%d\t%s\t%s\t%s\t%s\n", p.name, p.sex, p.age, p.birthday, p.phone, p.address, p.department, p.symptom);
+    return 1;
+}
+
+void OnelistInfo(Patient *p[], int count) {
+    int infonum;
+    printf("원하는 환자의 번호를 입력해주세요 : ");
+    scanf("%d", &infonum);
+    if(OnereadInfo(*p[infonum-1], infonum)==0) {
+        printf("해당 환자의 데이터가 없습니다.\n");
+    }
+    printf("\n");
+}
+
 // 환자 정보 조회
 void readInfo(Patient p){
     printf("%s\t%s\t%d\t%d\t%s\t%s\t%s\t%s\n", p.name, p.sex, p.age, p.birthday, p.phone, p.address, p.department, p.symptom);
@@ -66,7 +88,7 @@ void listInfo(Patient *p[], int count){
     printf("%s %s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n", "No", "Name ", "Sex", "Age", "Birthday   ", "PhoneNumber  ", "Address", "Department", "Symptom");
     printf("==============================================================================================\n");
     for(int i=0; i<count; i++) {
-        if(p[i] == NULL) continue;
+        if(p[i]->birthday == -1) continue;
         printf("%2d ", i+1);
         readInfo(*p[i]);
     } printf("\n");
@@ -124,7 +146,7 @@ int selectMenu(){
 }
 
 // 프로그램 실행시 txt 파일 로드
-int loadDate(Patient *p[]) {
+int loadData(Patient *p[]) {
     FILE *fp;
     fp = fopen("patient.txt", "rt"); // 읽어오는 용도로 파일 오픈
     if (fp == NULL) {
@@ -190,6 +212,8 @@ void searchName(Patient *p[], int count) {
 
 int main(void){
     int index, count, menu;
+    count = 0;
+    char infocheck;
     Patient *plist[20]; // README.md 파일에 20명이라고 해놔서 100명->20명으로 고쳤어요!
     // count = loadData(plist);
     index = count;
@@ -198,7 +222,16 @@ int main(void){
         menu = selectMenu();
         if (menu == 0) break;
         else if (menu == 1){
-            if (count > 0) listInfo(plist, index);
+            if (count > 0) {
+                listInfo(plist, index);
+                getchar();
+                printf("특정 학생의 정보를 조회하고 싶습니까?(Y/N) : ");
+                scanf("%c", &infocheck);
+                if(infocheck == 'Y') {
+                    OnelistInfo(plist, index);
+                }
+                printf("\n");
+            }
             else printf("=> 조회할 데이터가 없습니다.(현재 데이터 0개)\n\n");
         } 
         else if (menu == 2){
@@ -224,6 +257,7 @@ int main(void){
                 int deleteok;
                 printf("=> 정말로 삭제하시겠습니까? (삭제:1) : ");
                 scanf("%d", &deleteok);
+                printf("\n");
                 if (deleteok == 1) count -= deleteInfo(plist[num-1]);
                 else continue;
             }
