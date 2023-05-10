@@ -55,6 +55,7 @@ int selectNum() {
     return num;
 }
 
+// 특정환자 세부정보 조회
 int OnereadInfo(Patient p, int infonum) {
     if(p.birthday == -1) {
         return 0;
@@ -67,6 +68,7 @@ int OnereadInfo(Patient p, int infonum) {
     return 1;
 }
 
+// 메뉴 7번 과별 환자 정보
 void OnelistInfo(Patient *p[], int count) {
     int infonum;
     printf("원하는 환자의 번호를 입력해주세요 : ");
@@ -138,7 +140,7 @@ int selectMenu(){
     printf("🏥 병원 환자 관리 시스템 🖥️\n");
     printf("1. 환자 조회\t2. 환자 추가\t3. 환자 정보 수정\t4. 환자 정보 삭제\n");
     printf("5. 파일 저장\t6. 환자 검색\t7. 과별 환자 정보\t8. 진단서 추가\n");
-    printf("9. 진단서 조회\t10. 처방전 조회\t11. 수술 예약\t\t12. 결제 정보 조회\t0.종료\n");
+    printf("9. 처방전 조회\t10. 처방전 조회\t11. 수술 예약\t\t12. 결제 정보 조회\t0. 종료\n");
     printf("====> 원하는 메뉴: ");
     scanf("%d", &menu);
     printf("\n");
@@ -215,7 +217,7 @@ int main(void){
     count = 0;
     char infocheck;
     Patient *plist[20]; // README.md 파일에 20명이라고 해놔서 100명->20명으로 고쳤어요!
-    // count = loadData(plist);
+    count = loadData(plist);
     index = count;
 
     while (1){
