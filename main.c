@@ -50,7 +50,7 @@ int addInfo(Patient *p){
 // 환자 정보 수정/삭제 메뉴 시 번호 선택
 int selectNum() {
     int num;
-    printf("=> 환자 번호: ");
+    printf("=> 환자 번호(취소:0) : ");
     scanf("%d", &num);
     return num;
 }
@@ -253,6 +253,12 @@ int main(void){
             else {
                 listInfo(plist, index);
                 int num = selectNum();
+
+                if(num == 0){
+                    printf("=> 취소되었습니다.\n\n");
+                    continue;
+                }
+
                 updateInfo(plist[num-1]);
             }
         }
@@ -261,6 +267,11 @@ int main(void){
             else {
                 listInfo(plist, index);
                 int num = selectNum();
+
+                if(num == 0){
+                    printf("=> 취소되었습니다.\n\n");
+                    continue;
+                }
                 int deleteok;
                 printf("=> 정말로 삭제하시겠습니까? (삭제:1) : ");
                 scanf("%d", &deleteok);
