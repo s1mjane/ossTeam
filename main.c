@@ -68,7 +68,7 @@ int OnereadInfo(Patient p, int infonum) {
     return 1;
 }
 
-// 메뉴 7번 과별 환자 정보
+// 세부정보 조회할 특정환자 
 void OnelistInfo(Patient *p[], int count) {
     int infonum;
     printf("원하는 환자의 번호를 입력해주세요 : ");
@@ -149,12 +149,16 @@ int selectMenu(){
 
 // 프로그램 실행시 txt 파일 로드
 int loadData(Patient *p[]) {
+    int i = 0;
+    int count = 0;
+
     FILE *fp;
     fp = fopen("patient.txt", "rt"); // 읽어오는 용도로 파일 오픈
+    
     if (fp == NULL) {
         printf("파일 로드 중\n==> 저장된 파일이 없습니다.\n\n");
-        return 0;
-    } int count = 0, i = 0;
+        return i;
+    } 
     for (; i<20; i++) {
         p[i] = malloc(sizeof(Patient));
         fscanf(fp, "%s", p[i]->name);
@@ -189,7 +193,7 @@ void saveData(Patient *p[], int count) {
     printf("=> 파일 저장되었습니다.\n\n");
 }
 
-// 파일에서 이름 검색
+// 환자 이름 검색
 void searchName(Patient *p[], int count) {
     int pcount = 0;
     char search[20];
@@ -215,6 +219,7 @@ void searchName(Patient *p[], int count) {
 int main(void){
     int index, count, menu;
     count = 0;
+    index = 0;
     char infocheck;
     Patient *plist[20]; // README.md 파일에 20명이라고 해놔서 100명->20명으로 고쳤어요!
     count = loadData(plist);
@@ -265,11 +270,12 @@ int main(void){
             }
         }
         else if (menu == 5) { // 파일 저장
+        printf("%d\n", count);
             if (count == 0) printf("=> 저장할 데이터가 없습니다.\n\n");
             else saveData(plist, index);
         }
         else if (menu == 6) { // 파일에서 이름 검색
-            if (count == 0) printf("=> 데잍터가 없습니다.\n\n");
+            if (count == 0) printf("=> 데이터가 없습니다.\n\n");
             else searchName(plist, index);
         }
     }
