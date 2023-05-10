@@ -223,7 +223,7 @@ int main(void){
     while (1){
         menu = selectMenu();
         if (menu == 0) break;
-        else if (menu == 1){
+        else if (menu == 1){ // 환자 조회
             if (count > 0) {
                 listInfo(plist, index);
                 getchar();
@@ -236,14 +236,14 @@ int main(void){
             }
             else printf("=> 조회할 데이터가 없습니다.(현재 데이터 0개)\n\n");
         } 
-        else if (menu == 2){
+        else if (menu == 2){ // 환자 추가
             if (count >= 20) printf("=> 더이상 추가할 수 없습니다.(현재 데이터 20개)\n\n");
             else {
                 plist[index] = (Patient *)malloc(sizeof(Patient));
                 count += addInfo(plist[index++]);
             }
         }
-        else if (menu == 3) {
+        else if (menu == 3) { // 환자 정보 수정 
             if (count < 1) printf("=> 수정할 데이터가 없습니다.\n\n");
             else {
                 listInfo(plist, index);
@@ -251,7 +251,7 @@ int main(void){
                 updateInfo(plist[num-1]);
             }
         }
-        else if (menu == 4) {
+        else if (menu == 4) { // 환자 정보 삭제 
             if (count < 1) printf("=> 삭제할 데이터가 없습니다.\n\n");
             else {
                 listInfo(plist, index);
@@ -263,6 +263,14 @@ int main(void){
                 if (deleteok == 1) count -= deleteInfo(plist[num-1]);
                 else continue;
             }
+        }
+        else if (menu == 5) { // 파일 저장
+            if (count == 0) printf("=> 저장할 데이터가 없습니다.\n\n");
+            else saveData(plist, index);
+        }
+        else if (menu == 6) { // 파일에서 이름 검색
+            if (count == 0) printf("=> 데잍터가 없습니다.\n\n");
+            else searchName(plist, index);
         }
     }
     printf("\n");
