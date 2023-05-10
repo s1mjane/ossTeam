@@ -73,6 +73,7 @@ void OnelistInfo(Patient *p[], int count) {
     int infonum;
     printf("원하는 환자의 번호를 입력해주세요 : ");
     scanf("%d", &infonum);
+    getchar();
     if(OnereadInfo(*p[infonum-1], infonum)==0) {
         printf("해당 환자의 데이터가 없습니다.\n");
     }
@@ -232,12 +233,18 @@ int main(void){
             if (count > 0) {
                 listInfo(plist, index);
                 getchar();
-                printf("특정 학생의 정보를 조회하고 싶습니까?(Y/N) : ");
-                scanf("%c", &infocheck);
-                if(infocheck == 'Y') {
-                    OnelistInfo(plist, index);
+                while(1) {
+                    printf("특정 학생의 정보를 조회하고 싶습니까?(Y/N) : ");
+                    scanf("%c", &infocheck);
+                    getchar();
+                    if(infocheck == 'Y') {
+                        OnelistInfo(plist, index);
+                        printf("추가로 ");
+                    } else {
+                        printf("\n");
+                        break;
+                    }
                 }
-                printf("\n");
             }
             else printf("=> 조회할 데이터가 없습니다.(현재 데이터 0개)\n\n");
         } 
@@ -290,7 +297,6 @@ int main(void){
             else searchName(plist, index);
         }
     }
-    printf("\n");
     printf("=> 종료\n");
     return 0;
 }
