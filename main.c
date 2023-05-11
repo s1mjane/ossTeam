@@ -135,19 +135,6 @@ int deleteInfo(Patient *p) {
     return 1;
 }
 
-// 1~11번 및 종료 메뉴 선택
-int selectMenu(){
-    int menu;
-    printf("🏥 병원 환자 관리 시스템 🖥️\n");
-    printf("1. 환자 조회\t2. 환자 추가\t3. 환자 정보 수정\t4. 환자 정보 삭제\n");
-    printf("5. 파일 저장\t6. 환자 검색\t7. 과별 환자 정보\t8. 진단서 추가\n");
-    printf("9. 처방전 조회\t10. 처방전 조회\t11. 수술 예약\t\t12. 결제 정보 조회\t0. 종료\n");
-    printf("====> 원하는 메뉴: ");
-    scanf("%d", &menu);
-    printf("\n");
-    return menu;
-}
-
 // 프로그램 실행시 txt 파일 로드
 int loadData(Patient *p[]) {
     int i = 0;
@@ -215,6 +202,45 @@ void searchName(Patient *p[], int count) {
     }
     if (pcount == 0) printf("=> 검색된 데이터가 없습니다.\n");
     printf("\n");
+}
+
+// 과별 환자 검색
+void searchDepartment(Patient *p[], int count) {
+    int check = 0;
+    char search[20];
+
+    printf("=> 검색할 과 이름(ex: 내과/외과/피부과/정형외과): ");
+    scanf("%s", search);
+
+    printf("\n*** %s 환자 리스트 ***\n", search);
+    printf("%s %s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n", "No", "Name ", "Sex", "Age", "Birthday   ", "PhoneNumber  ", "Address", "Department", "Symptom");
+    printf("==============================================================================================\n");
+
+    for(int i=0; i<count; i++) {
+        if(p[i] == NULL)
+            continue;
+        if(strstr(p[i]->department, search)) {
+            printf("%2d ", i+1);
+            readInfo(*p[i]);
+            check++;
+        }
+    }
+    if(check == 0) {
+        printf("=> 검색된 데이터가 없습니다.\n");
+    }
+}
+
+// 1~11번 및 종료 메뉴 선택
+int selectMenu(){
+    int menu;
+    printf("\n🏥 병원 환자 관리 시스템 🖥️\n");
+    printf("1. 환자 조회\t2. 환자 추가\t3. 환자 정보 수정\t4. 환자 정보 삭제\n");
+    printf("5. 파일 저장\t6. 환자 검색\t7. 과별 환자 정보\t8. 진단서 추가\n");
+    printf("9. 처방전 조회\t10. 처방전 조회\t11. 수술 예약\t\t12. 결제 정보 조회\t0. 종료\n");
+    printf("====> 원하는 메뉴: ");
+    scanf("%d", &menu);
+    printf("\n");
+    return menu;
 }
 
 int main(void){
@@ -288,13 +314,16 @@ int main(void){
             }
         }
         else if (menu == 5) { // 파일 저장
-        printf("%d\n", count);
             if (count == 0) printf("=> 저장할 데이터가 없습니다.\n\n");
             else saveData(plist, index);
         }
         else if (menu == 6) { // 파일에서 이름 검색
             if (count == 0) printf("=> 데이터가 없습니다.\n\n");
             else searchName(plist, index);
+        }
+        else if (menu == 7) { // 검색한 과의 환자 리스트
+            if (count == 0) printf("=> 데이터가 없습니다.\n\n");
+            else searchDepartment(plist, index);
         }
     }
     printf("=> 종료\n");
