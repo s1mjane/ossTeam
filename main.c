@@ -15,46 +15,6 @@ typedef struct { // 환자 정보 구조체
     char symptom[100];
 } Patient;
 
-// 환자 정보 추가
-int addInfo(Patient *p){
-    char ch;
-    struct tm *t;
-    time_t now = time(NULL);
-    t = localtime(&now);
-
-    printf("환자 이름: ");
-    scanf("%s", p->name);
-    printf("성별(M or F): ");
-    scanf("%s", p->sex);
-    printf("생년월일은(8자리): ");
-    scanf("%d", &p->birthday);
-    getchar();
-    printf("핸드폰 번호(숫자만): ");
-    scanf("%s", p->phone);
-    printf("주소: ");
-    getchar();
-    scanf(" %s", p->address);
-    printf("진료과: ");
-    scanf("%s", p->department);
-    printf("증상: ");
-    scanf("%s", p->symptom);
-    ch = getchar();
-
-    // 생년월일만 입력 받고 나이는 함수 내에서 따로 계산해 저장만 해 둠. 추후 필요할 때 출력.
-    p->age = t->tm_year+1900-(p->birthday/10000)+1;
-
-    printf("=> %s 환자 진료 예약이 추가되었습니다.\n\n", p->name);
-    return 1;
-}
-
-// 환자 정보 수정/삭제 메뉴 시 번호 선택
-int selectNum() {
-    int num;
-    printf("=> 환자 번호(취소:0) : ");
-    scanf("%d", &num);
-    return num;
-}
-
 // 특정환자 세부정보 조회
 int OnereadInfo(Patient p, int infonum) {
     if(p.birthday == -1) {
@@ -95,6 +55,46 @@ void listInfo(Patient *p[], int count){
         printf("%2d ", i+1);
         readInfo(*p[i]);
     } printf("\n");
+}
+
+// 환자 정보 추가
+int addInfo(Patient *p){
+    char ch;
+    struct tm *t;
+    time_t now = time(NULL);
+    t = localtime(&now);
+
+    printf("환자 이름: ");
+    scanf("%s", p->name);
+    printf("성별(M or F): ");
+    scanf("%s", p->sex);
+    printf("생년월일은(8자리): ");
+    scanf("%d", &p->birthday);
+    getchar();
+    printf("핸드폰 번호(숫자만): ");
+    scanf("%s", p->phone);
+    printf("주소: ");
+    getchar();
+    scanf(" %s", p->address);
+    printf("진료과: ");
+    scanf("%s", p->department);
+    printf("증상: ");
+    scanf("%s", p->symptom);
+    ch = getchar();
+
+    // 생년월일만 입력 받고 나이는 함수 내에서 따로 계산해 저장만 해 둠. 추후 필요할 때 출력.
+    p->age = t->tm_year+1900-(p->birthday/10000)+1;
+
+    printf("=> %s 환자 진료 예약이 추가되었습니다.\n\n", p->name);
+    return 1;
+}
+
+// 환자 정보 수정/삭제 메뉴 시 번호 선택
+int selectNum() {
+    int num;
+    printf("=> 환자 번호(취소:0) : ");
+    scanf("%d", &num);
+    return num;
 }
 
 // 환자 정보 수정
