@@ -5,7 +5,7 @@
   
 <br>
 
-## Mini Project 에 대한 소개
+## 🏥 Mini Project 에 대한 소개
 > 병원에 등록한 환자들의 정보를 보여준다. **20명의 환자 정보를 관리**하며, **메뉴는 약 12개**이다.
 <img src = "https://cdn.pixabay.com/photo/2021/02/19/23/17/reception-6031806_1280.png">  
 
