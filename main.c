@@ -38,7 +38,7 @@ void OnelistInfo(Patient *p[], int count) {
     printf("원하는 환자의 번호를 입력해주세요 : ");
     scanf("%d", &infonum);
     getchar();
-    if(OnereadInfo(*p[infonum-1], infonum)==0) {
+    if((infonum <= 0) || (infonum > count) || OnereadInfo(*p[infonum-1], infonum)==0) {
         printf("해당 환자의 데이터가 없습니다.\n");
     }
     printf("\n");
