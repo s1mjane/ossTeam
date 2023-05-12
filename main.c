@@ -25,7 +25,7 @@ int OnereadInfo(Patient p, int infonum) {
     if(p.birthday == -1) return 0;
     printf("\n*** %d번 환자의 세부 정보 ***\n", infonum);
     printf("----------------------------------------------------------------------------------------------\n");
-    printf("%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n", 
+    printf("%s\t%s\t%s\t%s\t%s\t%s\t%s\t\t%s\n", 
             "Name ", "Sex", "Age", "Birthday   ", "PhoneNumber  ", "Address     ", "Department", "Symptom");
     printf("----------------------------------------------------------------------------------------------\n");
     printf("%s\t%s\t%d\t%d\t%s\t%s\t%s\t%s\n", p.name, p.sex, p.age, p.birthday, p.phone, p.address, p.department, p.symptom);
@@ -51,9 +51,9 @@ void readInfo(Patient p){
 
 // [메뉴 1번] 환자 정보 조회 리스트 (최대 20명)
 void listInfo(Patient *p[], int count){
-    printf("======================================== 환자 진료 예약 리스트 ========================================\n");
-    printf("%s %s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n", "No", "Name ", "Sex", "Age", "Birthday   ", "PhoneNumber  ", "Address     ", "Department", "Symptom");
-    printf("=======================================================================================================\n");
+    printf("======================================== 환자 진료 예약 리스트 ===================================================\n");
+    printf("%s %s\t%s\t%s\t%s\t%s\t%s\t%s\t\t%s\n", "No", "Name ", "Sex", "Age", "Birthday   ", "PhoneNumber  ", "Address     ", "Department", "Symptom");
+    printf("==================================================================================================================\n");
     for(int i=0; i<count; i++) {
         if(p[i]->birthday == -1) continue;
         printf("%2d ", i+1);
@@ -192,7 +192,7 @@ void searchName(Patient *p[], int count) {
     printf("=> 검색할 이름 : ");
     scanf("%s", search);
     printf("===================================== 리스트 검색 조회 결과 =====================================\n");
-    printf("%s %s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n", "No", "Name ", "Sex", "Age", "Birthday   ", "PhoneNumber  ", "Address", "Department", "Symptom");
+    printf("%s %s\t%s\t%s\t%s\t%s\t%s\t%s\t\t%s\n", "No", "Name ", "Sex", "Age", "Birthday   ", "PhoneNumber  ", "Address", "Department", "Symptom");
     printf("==============================================================================================\n");
     for (int i=0; i<count; i++) {
         if (p[i] == NULL) continue;
@@ -278,15 +278,14 @@ int main(void){
                 while(1) {
                     printf("특정 학생의 정보를 조회하고 싶습니까?(Y/N) : ");
                     scanf("%c", &infocheck);
-                    // 소문자를 대문자로 변환할 때 이거 한 줄만 추가
-                    if(infocheck >= 'a' && infocheck <= 'z') infocheck -=32;
-                    getchar();
-                    if(infocheck == 'Y') {
+        
+                    if(infocheck == 'Y' || infocheck == 'y') {
                         OnelistInfo(plist, index);
                         printf("추가로 ");
-                    } else {
-                        printf("\n");
+                    } else if (infocheck == 'N' || infocheck == 'n'){
                         break;
+                    } else {
+                        printf("잘못된 입력입니다. 다시 입력해주세요.\n");
                     }
                 }
             }
