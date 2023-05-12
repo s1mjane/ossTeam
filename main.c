@@ -139,6 +139,19 @@ int deleteInfo(Patient *p) {
     return 1;
 }
 
+// [메뉴 5번] 파일 저장
+void saveData(Patient *p[], int count) {
+    FILE *fp;
+    fp = fopen("patient.txt","wt"); // 텍스트 쓰는 용도로 파일 오픈
+    for (int i = 0; i<count; i++) {
+        if (p[i]->birthday != -1) {
+            fprintf(fp, "%s %s %d %d %s %s %s %s\n", p[i]->name, p[i]->sex, p[i]->age, p[i]->birthday, p[i]->phone, p[i]->address, p[i]->department, p[i]->symptom);
+        }
+    } 
+    fclose(fp);
+    printf("=> 파일 저장되었습니다.\n\n");
+}
+
 // 프로그램 실행시 txt 파일 로드
 int loadData(Patient *p[]) {
     int i = 0;
@@ -156,6 +169,7 @@ int loadData(Patient *p[]) {
         fscanf(fp, "%s", p[i]->name);
         if (feof(fp)) break; // 파일 끝을 만났을 때
         fscanf(fp, "%s", p[i]->sex);
+        fscanf(fp, "%d", &p[i]->age);
         fscanf(fp, "%d", &p[i]->birthday);
         fscanf(fp, "%s", p[i]->phone);
         fscanf(fp, "%s", p[i]->address);
@@ -170,19 +184,6 @@ int loadData(Patient *p[]) {
     fclose(fp);
     printf("파일 로드 중\n=> 로딩 성공!\n");
     return i;
-}
-
-// [메뉴 5번] 파일 저장
-void saveData(Patient *p[], int count) {
-    FILE *fp;
-    fp = fopen("patient.txt","wt"); // 텍스트 쓰는 용도로 파일 오픈
-    for (int i = 0; i<count; i++) {
-        if (p[i]->birthday != -1) {
-            fprintf(fp, "%s %s %d %s %s %s %s\n", p[i]->name, p[i]->sex, p[i]->birthday, p[i]->phone, p[i]->address, p[i]->department, p[i]->symptom);
-        }
-    } 
-    fclose(fp);
-    printf("=> 파일 저장되었습니다.\n\n");
 }
 
 // [메뉴 6번] 환자 이름 검색
