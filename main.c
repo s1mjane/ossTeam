@@ -18,6 +18,7 @@ typedef struct { // 환자 정보 구조체
     char diagnosis[100]; // 진단
     char treatment[100]; // 치료 방법
     char recommendation[100]; //예방 및 권고사항
+    char diagcheck[2];
 } Patient;
 
 // 특정환자 세부정보 조회
@@ -237,14 +238,31 @@ void searchDepartment(Patient *p[], int count) {
 
 // [메뉴 8번] 진단서 작성
 void writeDiagnosis(Patient *p) {
+    getchar();
     printf("=== %s 환자 진단서 작성 ===\n", p->name);
     printf("진단(병명) : ");
     scanf("%[^\n]s", p->diagnosis);
+    getchar();
     printf("치료방법 : ");
     scanf("%[^\n]s", p->treatment);
+    getchar();
     printf("예방 및 권고사항 : ");
     scanf("%[^\n]s", p->recommendation);
+    getchar();
+    
+    strcpy(p->diagcheck, "O");
     return;
+}
+
+void Diagnosislist(Patient *p[], int count) {
+    for(int i=0; i<count; i++) {
+        if(p[i] == NULL)
+            continue;
+        if(strcmp(p[i]->diagcheck, "") != 0) {
+            printf("%2d ", i+1);
+            readInfo(*p[i]);
+        }
+    }
 }
 
 // 1~11번 및 종료 메뉴 선택
@@ -256,14 +274,16 @@ int selectMenu(){
     printf("9. 진단서 조회\t10. 처방전 조회\t11. 수술 예약\t\t12. 결제 정보 조회\t0. 종료\n");
     printf("====> 원하는 메뉴: ");
     scanf("%d", &menu);
+    getchar();
     printf("\n");
     return menu;
 }
 
 int main(void){
-    int index, count, menu;
+    int index, count, menu, diagcount;
     count = 0;
     index = 0;
+    diagcount = 0;
     char infocheck;
     Patient *plist[20]; // README.md 파일에 20명이라고 해놔서 100명->20명으로 고쳤어요!
     count = loadData(plist);
@@ -344,7 +364,7 @@ int main(void){
         else if (menu == 8) { // 진단서 작성
             if (count < 1) printf("=> 아직 진단서를 작성할 환자가 없습니다.(현재 데이터 0개)\n\n");
             else {
-                printf("=> 진단서 작성할 환자");
+                printf("=> 진단서 작성할 환자\n");
                 listInfo(plist, index);
                 int num = selectNum();
                 if(num == 0){
@@ -352,6 +372,13 @@ int main(void){
                     continue;
                 }
                 writeDiagnosis(plist[num-1]);
+                diagcount++;
+            }
+
+        } else if (menu == 9) { // 진단서 조회
+            if(diagcount < 1) printf("=> 진단서 작성이 완료된 환자가 없습니다.\n\n");
+            else{
+                Diagnosislist(plist, index);
             }
 
         }
