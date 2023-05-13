@@ -18,6 +18,8 @@ typedef struct { // 환자 정보 구조체
     char diagnosis[100]; // 진단
     char treatment[100]; // 치료 방법
     char recommendation[100]; //예방 및 권고사항
+    char medicine[100]; // 약 처방
+    char needSurgery[2]; // 수술필요여부
     char diagcheck[2];
 } Patient;
 
@@ -239,7 +241,7 @@ void searchDepartment(Patient *p[], int count) {
 // [메뉴 8번] 진단서 작성
 void writeDiagnosis(Patient *p) {
     getchar();
-    printf("=== %s 환자 진단서 작성 ===\n", p->name);
+    printf("\n=== %s 환자 진단서 작성 ===\n", p->name);
     printf("진단(병명) : ");
     scanf("%[^\n]s", p->diagnosis);
     getchar();
@@ -249,11 +251,19 @@ void writeDiagnosis(Patient *p) {
     printf("예방 및 권고사항 : ");
     scanf("%[^\n]s", p->recommendation);
     getchar();
+    printf("약 처방 : ");
+    scanf("%[^\n]s", p->medicine);
+    getchar();
+    printf("수술 필요 여부(O/X) : ");
+    scanf("%[^\n]s", p->needSurgery);
+    getchar();
+    if (strcmp(p->needSurgery, "O")) printf("(=> 11번 메뉴를 선택해 수술 예약을 잡으세요.)\n");
     
     strcpy(p->diagcheck, "O");
     return;
 }
 
+// [메뉴 9번] 진단서 조회
 void Diagnosislist(Patient *p[], int count) {
     for(int i=0; i<count; i++) {
         if(p[i] == NULL)
@@ -295,7 +305,7 @@ int main(void){
         else if (menu == 1){ // 환자 조회
             if (count > 0) {
                 listInfo(plist, index);
-                getchar();
+                //getchar();
                 while(1) {
                     printf("특정 학생의 정보를 조회하고 싶습니까?(Y/N) : ");
                     scanf("%c", &infocheck);
