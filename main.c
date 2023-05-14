@@ -381,7 +381,8 @@ int main(void){
     count = 0;
     index = 0;
     diagcount = 0;
-    char infocheck;
+
+    int infocheck;
     Patient *plist[20]; // README.md 파일에 20명이라고 해놔서 100명->20명으로 고쳤어요!
     count = loadData(plist);
     index = count;
@@ -393,17 +394,19 @@ int main(void){
             if (count > 0) {
                 listInfo(plist, index);
                 while(1) {
-                    printf("특정 환자의 정보를 조회하고 싶습니까?(Y/N) : ");
-                    scanf("%c", &infocheck);
+
+                    printf("특정 환자의 정보를 조회하고 싶습니까?(확인:1, 취소:0) : ");
+                    scanf("%d", &infocheck);
                     getchar();
         
-                    if(infocheck == 'Y' || infocheck == 'y') {
-                        OnelistInfo(plist, index);
-                        printf("추가로 ");
-                    } else if (infocheck == 'N' || infocheck == 'n'){
+                    if(infocheck == 0) {
+                        printf("=> 취소되었습니다.\n");
                         break;
                     } else {
-                        printf("잘못된 입력입니다. 다시 입력해주세요.\n");
+                        printf("\n");
+                        listInfo(plist, index);
+                        OnelistInfo(plist, index);
+                        printf("추가로 ");
                     }
                 }
             }
@@ -438,12 +441,17 @@ int main(void){
                     printf("=> 취소되었습니다.\n\n");
                     continue;
                 }
-                int deleteok;
-                printf("=> 정말로 삭제하시겠습니까? (삭제:1) : ");
-                scanf("%d", &deleteok);
-                printf("\n");
-                if (deleteok == 1) count -= deleteInfo(plist[num-1]);
-                else continue;
+
+                if(plist[num-1]->birthday == -1) {
+                    printf("삭제할 데이터가 없습니다.\n");
+                } else {
+                    int deleteok;
+                    printf("=> 정말로 삭제하시겠습니까? (삭제:1) : ");
+                    scanf("%d", &deleteok);
+                    printf("\n");
+                    if (deleteok == 1) count -= deleteInfo(plist[num-1]);
+                    else continue;
+                }
             }
         }
         else if (menu == 5) { // 파일 저장
