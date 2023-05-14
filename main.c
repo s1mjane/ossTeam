@@ -1,6 +1,6 @@
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <stdlib.h> // 동적할당
+#include <string.h> // strstr
 #include <time.h>
 
 typedef struct { // 환자 정보 구조체
@@ -14,12 +14,14 @@ typedef struct { // 환자 정보 구조체
     char department[100];
     char symptom[100];
 
-    // 여기서부터 아래는 진단서 작성에 필요한 추가 정보
+    // 여기서부터 아래는 진단서 작성 및 수술 예약 메뉴 등에 필요한 추가 정보
     char diagnosis[100]; // 진단
     char treatment[100]; // 치료 방법
     char recommendation[100]; //예방 및 권고사항
     char medicine[100]; // 약 처방
     char needSurgery[2]; // 수술필요여부
+    char surgeryName[100]; // 수술 이름
+    int surgeryDate; // 수술 날짜
     char diagcheck[2];
 } Patient;
 
@@ -275,6 +277,48 @@ void Diagnosislist(Patient *p[], int count) {
     }
 }
 
+// [메뉴 10번] 처방전 조회
+
+
+// [for 메뉴 11번] 수술 예약 추가시 날짜 가능 확인 여부 조회하는 함수
+int isAvailableDate(Patient *p[], int count, int date) {
+    for (int i=0; i<count; i++) {
+        if (p[i]==NULL) continue;
+        if (date == p[i]->surgeryDate) return 0;
+    }
+    return 1; // 겹치는 날짜 없을 때 1 리턴
+}
+
+// [메뉴 11번] 수술 예약
+int surgeryList(Patient *p[], int count, int num) {
+    Patient ok; // 예약 추가하기 전에 잠깐 넣어놓을 용도
+    // 잠깐 넣어놓을 곳으로 일단 정보 받음
+    printf("\n=== %s 환자의 수술 예약 추가 ===\n", p[num-1]->name);
+    printf("수술명 : ");
+    scanf("%s", ok.surgeryName);
+    while(1) {
+    // 수술 가능 날짜 확인
+        printf("수술날짜 : ");
+        scanf("%d", &ok.surgeryDate);
+        if (count > 0) {
+            if (isAvailableDate(p, count, ok.surgeryDate) == 1) {
+                p[num-1]->surgeryDate = ok.surgeryDate;
+                printf("=> %s 환자의 수술 예약이 추가되었습니다.\n=> 예약 정보는 '메뉴 1번' 환자 조회의 세부 정보 조회로 확인할 수 있습니다.\n\n", p[num-1]->name);
+                return 1;
+                break;
+            } else { // 날짜 겹쳐서 안 되는 경우
+                printf("=> 예약 불가능한 날짜입니다.\n\n");
+            }
+        } else { // 맨 처음 추가인 경우 무조건 추가 가능
+            p[num-1]->surgeryDate = ok.surgeryDate;
+            printf("=> %s 환자의 수술 예약이 추가되었습니다. 예약 정보는 메뉴 1번 환자 조회의 세부 정보 조회로 확인할 수 있습니다.\n\n", p[num-1]->name);
+            return 1;
+            break;
+        }
+    }
+
+}
+
 // 1~11번 및 종료 메뉴 선택
 int selectMenu(){
     int menu;
@@ -390,7 +434,14 @@ int main(void){
             else{
                 Diagnosislist(plist, index);
             }
+        } else if (menu == 10) {
 
+        } else if (menu == 11) { // 수술 예약            
+            listInfo(plist, index);
+            int num;
+            printf("=> 몇 번 환자의 수술 예약을 추가하시겠습니까? ");
+            scanf("%d", &num);
+            if (surgeryList(plist, index, num) != 1) continue; 
         }
     }
     printf("=> 종료\n");
