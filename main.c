@@ -25,15 +25,24 @@ typedef struct { // 환자 정보 구조체
     char diagcheck[2];
 } Patient;
 
+// 글자수 세는 함수 (department 글자수 계산 위해)
+int stringLength(const char* str) {
+    int length = 0;
+    while (str[length] != '\0') length++;
+    return length;
+}
+
 // 특정환자 세부정보 조회
 int OnereadInfo(Patient p, int infonum) {
     if(p.birthday == -1) return 0;
     printf("\n*** %d번 환자의 세부 정보 ***\n", infonum);
     printf("----------------------------------------------------------------------------------------------\n");
-    printf("%s\t%s\t%s\t%s\t%s\t%s\t%s\t\t%s\n", 
+    printf("%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n", 
             "Name ", "Sex", "Age", "Birthday   ", "PhoneNumber  ", "Address     ", "Department", "Symptom");
     printf("----------------------------------------------------------------------------------------------\n");
-    printf("%s\t%s\t%d\t%d\t%s\t%s\t%s\t%s\n", p.name, p.sex, p.age, p.birthday, p.phone, p.address, p.department, p.symptom);
+    int len = stringLength(p.department);
+    if (len < 12) printf("%s\t%s\t%d\t%d\t%s\t%s\t%s\t\t%s\n", p.name, p.sex, p.age, p.birthday, p.phone, p.address, p.department, p.symptom);
+    if (len > 11) printf("%s\t%s\t%d\t%d\t%s\t%s\t%s\t%s\n", p.name, p.sex, p.age, p.birthday, p.phone, p.address, p.department, p.symptom);
     return 1;
 }
 
@@ -51,13 +60,16 @@ void OnelistInfo(Patient *p[], int count) {
 
 // [메뉴 1번 세부] 환자 정보 조회
 void readInfo(Patient p){
-    printf("%s\t%s\t%d\t%d\t%s\t%s\t%s\t\t%s\n", p.name, p.sex, p.age, p.birthday, p.phone, p.address, p.department, p.symptom);
+    int len = stringLength(p.department);
+    //printf("len: %d\n", len);
+    if (len < 12) printf("%s\t%s\t%d\t%d\t%s\t%s\t%s\t\t%s\n", p.name, p.sex, p.age, p.birthday, p.phone, p.address, p.department, p.symptom);
+    if (len > 11) printf("%s\t%s\t%d\t%d\t%s\t%s\t%s\t%s\n", p.name, p.sex, p.age, p.birthday, p.phone, p.address, p.department, p.symptom);
 }
 
 // [메뉴 1번] 환자 정보 조회 리스트 (최대 20명)
 void listInfo(Patient *p[], int count){
     printf("======================================== 환자 진료 예약 리스트 ===================================================\n");
-    printf("%s %s\t%s\t%s\t%s\t%s\t%s\t%s\t\t%s\n", "No", "Name ", "Sex", "Age", "Birthday   ", "PhoneNumber  ", "Address     ", "Department", "Symptom");
+    printf("%s %s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n", "No", "Name ", "Sex", "Age", "Birthday   ", "PhoneNumber  ", "Address     ", "Department", "Symptom");
     printf("==================================================================================================================\n");
     for(int i=0; i<count; i++) {
         if(p[i]->birthday == -1) continue;
