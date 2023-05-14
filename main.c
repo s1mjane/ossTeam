@@ -23,6 +23,7 @@ typedef struct { // 환자 정보 구조체
     char surgeryName[100]; // 수술 이름
     int surgeryDate; // 수술 날짜
     char diagcheck[2]; // 진단서 작성되었는지 
+    char billok[2]; // 결제 여부
 } Patient;
 
 // [for 메뉴 1번] 글자수 세는 함수 (department 글자수 계산 위해)
@@ -36,13 +37,17 @@ int stringLength(const char* str) {
 int OnereadInfo(Patient p, int infonum) {
     if(p.birthday == -1) return 0;
     printf("\n*** %d번 환자의 세부 정보 ***\n", infonum);
-    printf("----------------------------------------------------------------------------------------------\n");
-    printf("%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n", 
-            "Name ", "Sex", "Age", "Birthday   ", "PhoneNumber  ", "Address     ", "Department", "Symptom");
-    printf("----------------------------------------------------------------------------------------------\n");
-    int len = stringLength(p.department);
-    if (len < 12) printf("%s\t%s\t%d\t%d\t%s\t%s\t%s\t\t%s\n", p.name, p.sex, p.age, p.birthday, p.phone, p.address, p.department, p.symptom);
-    if (len > 11) printf("%s\t%s\t%d\t%d\t%s\t%s\t%s\t%s\n", p.name, p.sex, p.age, p.birthday, p.phone, p.address, p.department, p.symptom);
+    printf("-----------------------------------------------------------------------------------------------------------\n");
+    printf("%s\t%s\t%s\t\t\t\t\t%s\t%s\t%s\n", 
+            "Name ", "PhoneNumber  ", "Address", "Diagnosis", "수술 날짜", "결제 여부");
+    printf("-----------------------------------------------------------------------------------------------------------\n");
+    int len = stringLength(p.address);
+    //printf("%d\n", len);
+    if (len <= 16) printf("%s\t%s\t%s\t\t\t\t\t%s\t\t%d\t\t%s\n", p.name, p.phone, p.address, p.diagcheck, p.surgeryDate, p.billok);
+    else if (len <= 32) printf("%s\t%s\t%s\t\t\t\t%s\t\t%d\t\t%s\n", p.name, p.phone, p.address, p.diagcheck, p.surgeryDate, p.billok);
+    else if (len <= 48) printf("%s\t%s\t%s\t\t\t%s\t\t%d\t\t%s\n", p.name, p.phone, p.address, p.diagcheck, p.surgeryDate, p.billok);
+    else if (len <= 64) printf("%s\t%s\t%s\t\t%s\t\t%d\t\t%s\n", p.name, p.phone, p.address, p.diagcheck, p.surgeryDate, p.billok);
+    else if (len <= 96) printf("%s\t%s\t%s\t%s\t\t%d\t\t%s\n", p.name, p.phone, p.address, p.diagcheck, p.surgeryDate, p.billok);
     return 1;
 }
 
@@ -62,14 +67,14 @@ void OnelistInfo(Patient *p[], int count) {
 void readInfo(Patient p){
     int len = stringLength(p.department);
     //printf("len: %d\n", len);
-    if (len < 12) printf("%s\t%s\t%d\t%d\t%s\t%s\t%s\t\t%s\n", p.name, p.sex, p.age, p.birthday, p.phone, p.address, p.department, p.symptom);
-    if (len > 11) printf("%s\t%s\t%d\t%d\t%s\t%s\t%s\t%s\n", p.name, p.sex, p.age, p.birthday, p.phone, p.address, p.department, p.symptom);
+    if (len < 12) printf("%s\t%s\t%d\t%d\t%s\t\t%s\n", p.name, p.sex, p.age, p.birthday, p.department, p.symptom);
+    if (len > 11) printf("%s\t%s\t%d\t%d\t%s\t%s\n", p.name, p.sex, p.age, p.birthday, p.department, p.symptom);
 }
 
 // [메뉴 1번] 환자 정보 조회 리스트 (최대 20명)
 void listInfo(Patient *p[], int count){
     printf("======================================== 환자 진료 예약 리스트 ===================================================\n");
-    printf("%s %s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n", "No", "Name ", "Sex", "Age", "Birthday   ", "PhoneNumber  ", "Address     ", "Department", "Symptom");
+    printf("%s %s\t%s\t%s\t%s\t%s\t%s\n", "No", "Name ", "Sex", "Age", "Birthday   ", "Department", "Symptom");
     printf("==================================================================================================================\n");
     for(int i=0; i<count; i++) {
         if(p[i]->birthday == -1) continue;
@@ -102,6 +107,9 @@ int addInfo(Patient *p){
     printf("증상: ");
     scanf(" %[^\n]s", p->symptom);
     ch = getchar();
+    strcpy(p->diagcheck, "X");
+    strcpy(p->billok, "X");
+    
 
     // 생년월일만 입력 받고 나이는 함수 내에서 따로 계산해 저장만 해 둠. 추후 필요할 때 출력.
     p->age = t->tm_year+1900-(p->birthday/10000)+1;
@@ -142,6 +150,8 @@ int updateInfo(Patient *p){
     printf("증상: ");
     scanf(" %[^\n]s", p->symptom);
     ch = getchar();
+    strcpy(p->diagcheck, "X");
+    strcpy(p->billok, "X");
 
     // 생년월일만 입력 받고 나이는 함수 내에서 따로 계산해 저장만 해 둠. 추후 필요할 때 출력.
     p->age = t->tm_year+1900-(p->birthday/10000)+1;
@@ -330,7 +340,7 @@ int surgeryList(Patient *p[], int count, int num) {
     scanf("%s", ok.surgeryName);
     while(1) {
     // 수술 가능 날짜 확인
-        printf("수술날짜 : ");
+        printf("수술날짜(8자리) : ");
         scanf("%d", &ok.surgeryDate);
         if (count > 0) {
             if (isAvailableDate(p, count, ok.surgeryDate) == 1) {
@@ -455,7 +465,7 @@ int main(void){
                 listInfo(plist, index);
                 int num = selectNum();
                 if(num == 0){
-                    printf("=> 취소되었습니다.\n\n");
+                    printf("=> 취소되었습니다.\n");
                     continue;
                 }
                 writeDiagnosis(plist[num-1]);
