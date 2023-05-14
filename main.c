@@ -271,14 +271,29 @@ void writeDiagnosis(Patient *p) {
     printf("수술 필요 여부(O/X) : ");
     scanf("%[^\n]s", p->needSurgery);
     getchar();
-    if (strcmp(p->needSurgery, "O")) printf("(=> 11번 메뉴를 선택해 수술 예약을 잡으세요.)\n");
+    if (strcmp(p->needSurgery, "O")==0) printf("(=> 11번 메뉴를 선택해 수술 예약을 잡으세요.)\n");
     
     strcpy(p->diagcheck, "O");
     return;
 }
 
-// [메뉴 9번] 진단서 조회
+// [메뉴 9번] 선택된 환자의 진단서 출력
+void DiagnosisPrint(Patient p){
+    printf("\n=== %s 환자 진단서 ===\n", p.name);
+    printf("진단(병명) : %s\n", p.diagnosis);
+    printf("치료방법 : %s\n", p.treatment);
+    printf("예방 및 권고사항 : %s\n", p.recommendation);
+    printf("약 처방 : %s\n", p.medicine);
+    printf("수술 필요 여부(O/X) : %s\n", p.needSurgery);
+}
+
+// [for 메뉴 9번] 진단서 작성된 환자 조회 및 선택
 void Diagnosislist(Patient *p[], int count) {
+    int num;
+    char check;
+    printf("=== 진단서가 작성된 환자 목록 ===\n");
+    printf("%s %s\t%s\t%s\t%s\t%s\t%s\t%s\t\t%s\n", "No", "Name ", "Sex", "Age", "Birthday   ", "PhoneNumber  ", "Address", "Department", "Symptom");
+    printf("==============================================================================================\n");
     for(int i=0; i<count; i++) {
         if(p[i] == NULL)
             continue;
@@ -287,7 +302,12 @@ void Diagnosislist(Patient *p[], int count) {
             readInfo(*p[i]);
         }
     }
+    printf("\n진단서를 확인하고 싶은 환자의 번호는? : ");
+    scanf("%d", &num);
+    getchar();
+    DiagnosisPrint(*p[num-1]); 
 }
+
 
 // [메뉴 10번] 처방전 조회
 
@@ -345,6 +365,7 @@ int selectMenu(){
     return menu;
 }
 
+// 메인
 int main(void){
     int index, count, menu, diagcount;
     count = 0;
@@ -361,10 +382,10 @@ int main(void){
         else if (menu == 1){ // 환자 조회
             if (count > 0) {
                 listInfo(plist, index);
-                //getchar();
                 while(1) {
-                    printf("특정 학생의 정보를 조회하고 싶습니까?(Y/N) : ");
+                    printf("특정 환자의 정보를 조회하고 싶습니까?(Y/N) : ");
                     scanf("%c", &infocheck);
+                    getchar();
         
                     if(infocheck == 'Y' || infocheck == 'y') {
                         OnelistInfo(plist, index);
