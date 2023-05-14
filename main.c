@@ -22,17 +22,17 @@ typedef struct { // 환자 정보 구조체
     char needSurgery[2]; // 수술필요여부
     char surgeryName[100]; // 수술 이름
     int surgeryDate; // 수술 날짜
-    char diagcheck[2];
+    char diagcheck[2]; // 진단서 작성되었는지 
 } Patient;
 
-// 글자수 세는 함수 (department 글자수 계산 위해)
+// [for 메뉴 1번] 글자수 세는 함수 (department 글자수 계산 위해)
 int stringLength(const char* str) {
     int length = 0;
     while (str[length] != '\0') length++;
     return length;
 }
 
-// 특정환자 세부정보 조회
+// [메뉴 1번 세부] 특정환자 세부정보 조회
 int OnereadInfo(Patient p, int infonum) {
     if(p.birthday == -1) return 0;
     printf("\n*** %d번 환자의 세부 정보 ***\n", infonum);
@@ -46,7 +46,7 @@ int OnereadInfo(Patient p, int infonum) {
     return 1;
 }
 
-// 세부정보 조회할 특정환자 
+// [for 메뉴 1번 세부] 세부정보 조회할 특정환자 선택
 void OnelistInfo(Patient *p[], int count) {
     int infonum;
     printf("원하는 환자의 번호를 입력해주세요 : ");
@@ -58,7 +58,7 @@ void OnelistInfo(Patient *p[], int count) {
     printf("\n");
 }
 
-// [메뉴 1번 세부] 환자 정보 조회
+// [메뉴 1번] 환자 정보 조회
 void readInfo(Patient p){
     int len = stringLength(p.department);
     //printf("len: %d\n", len);
@@ -297,15 +297,15 @@ void Diagnosislist(Patient *p[], int count) {
     for(int i=0; i<count; i++) {
         if(p[i] == NULL)
             continue;
-        if(strcmp(p[i]->diagcheck, "") != 0) {
+        if(strcmp(p[i]->diagcheck, "") != 0) { // 진단서가 작성되었는지 확인
             printf("%2d ", i+1);
             readInfo(*p[i]);
         }
     }
-    printf("\n진단서를 확인하고 싶은 환자의 번호는? : ");
+    printf("\n진단서를 확인하고 싶은 환자의 번호는? : "); // 진단서를 확인하고 싶은 환자 번호 선택
     scanf("%d", &num);
     getchar();
-    DiagnosisPrint(*p[num-1]); 
+    DiagnosisPrint(*p[num-1]); // 진단서 
 }
 
 
