@@ -381,6 +381,7 @@ int main(void){
     count = 0;
     index = 0;
     diagcount = 0;
+
     int infocheck;
     Patient *plist[20]; // README.md 파일에 20명이라고 해놔서 100명->20명으로 고쳤어요!
     count = loadData(plist);
@@ -393,6 +394,7 @@ int main(void){
             if (count > 0) {
                 listInfo(plist, index);
                 while(1) {
+
                     printf("특정 환자의 정보를 조회하고 싶습니까?(확인:1, 취소:0) : ");
                     scanf("%d", &infocheck);
                     getchar();
