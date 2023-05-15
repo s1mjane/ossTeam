@@ -45,19 +45,19 @@ int OnereadInfo(Patient p, int infonum) {
     //printf("%d\n", len);
     if (len <= 16) {
         if (p.surgeryDate == 0) printf("%s\t%s\t%s\t\t\t\t\t%s\t\t%d\t\t%s\n", p.name, p.phone, p.address, p.diagcheck, p.surgeryDate, p.billok);
-        else printf("%s\t%s\t%s\t\t\t\t\t%s\t%d\t\t%s\n", p.name, p.phone, p.address, p.diagcheck, p.surgeryDate, p.billok);
+        else printf("%s\t%s\t%s\t\t\t\t\t%s\t\t%d\t\t%s\n", p.name, p.phone, p.address, p.diagcheck, p.surgeryDate, p.billok);
     } else if (len <= 32) {
         if (p.surgeryDate == 0) printf("%s\t%s\t%s\t\t\t\t%s\t\t%d\t\t%s\n", p.name, p.phone, p.address, p.diagcheck, p.surgeryDate, p.billok);
-        else printf("%s\t%s\t%s\t\t\t\t\t%s\t%d\t\t%s\n", p.name, p.phone, p.address, p.diagcheck, p.surgeryDate, p.billok);
+        else printf("%s\t%s\t%s\t\t\t\t\t%s\t\t%d\t\t%s\n", p.name, p.phone, p.address, p.diagcheck, p.surgeryDate, p.billok);
     } else if (len <= 48) {
         if (p.surgeryDate == 0) printf("%s\t%s\t%s\t\t\t%s\t\t%d\t\t%s\n", p.name, p.phone, p.address, p.diagcheck, p.surgeryDate, p.billok);
-        else printf("%s\t%s\t%s\t\t\t\t\t%s\t%d\t\t%s\n", p.name, p.phone, p.address, p.diagcheck, p.surgeryDate, p.billok);
+        else printf("%s\t%s\t%s\t\t\t\t\t%s\t\t%d\t\t%s\n", p.name, p.phone, p.address, p.diagcheck, p.surgeryDate, p.billok);
     } else if (len <= 64) {
         if (p.surgeryDate == 0) printf("%s\t%s\t%s\t\t%s\t\t%d\t\t%s\n", p.name, p.phone, p.address, p.diagcheck, p.surgeryDate, p.billok);
-        else printf("%s\t%s\t%s\t\t\t\t\t%s\t\t%d\t%s\n", p.name, p.phone, p.address, p.diagcheck, p.surgeryDate, p.billok);
+        else printf("%s\t%s\t%s\t\t\t\t\t%s\t\t%d\t\t%s\n", p.name, p.phone, p.address, p.diagcheck, p.surgeryDate, p.billok);
     } else if (len <= 96) {
         if (p.surgeryDate == 0) printf("%s\t%s\t%s\t%s\t\t%d\t\t%s\n", p.name, p.phone, p.address, p.diagcheck, p.surgeryDate, p.billok);
-        else printf("%s\t%s\t%s\t\t\t\t\t%s\t%d\t\t%s\n", p.name, p.phone, p.address, p.diagcheck, p.surgeryDate, p.billok);
+        else printf("%s\t%s\t%s\t\t\t\t\t%s\t\t%d\t\t%s\n", p.name, p.phone, p.address, p.diagcheck, p.surgeryDate, p.billok);
     }
     return 1;
 }
@@ -369,8 +369,20 @@ int surgeryList(Patient *p[], int count, int num) {
             break;
         }
     }
-
 }
+
+// [메뉴 12번] 결제
+int pay(Patient *p[], int count, int num){
+    int way = 0;
+    printf("=== %s 환자 결제창 ===\n", p[num-1]->name);
+    printf("결제 방법(카드:1/현금:2) : ");
+    scanf("%d", &way);
+    // 결제 완료 (메뉴1번의 세부조회정보에서 표시)
+    if (way != 0) strcpy(p[num-1]->diagcheck, "O");
+    printf("=> %s 환자 결제 완료되었습니다.\n\n", p[num-1]->name);
+    return 1;
+}
+
 
 // 1~11번 및 종료 메뉴 선택
 int selectMenu(){
@@ -378,7 +390,7 @@ int selectMenu(){
     printf("\n🏥 병원 환자 관리 시스템 🖥️\n");
     printf("1. 환자 조회\t2. 환자 추가\t3. 환자 정보 수정\t4. 환자 정보 삭제\n");
     printf("5. 파일 저장\t6. 환자 검색\t7. 과별 환자 정보\t8. 진단서 추가\n");
-    printf("9. 진단서 조회\t10. 처방전 조회\t11. 수술 예약\t\t12. 결제 정보 조회\t0. 종료\n");
+    printf("9. 진단서 조회\t10. 처방전 조회\t11. 수술 예약\t\t12. 결제\t0. 종료\n");
     printf("====> 원하는 메뉴: ");
     scanf("%d", &menu);
     getchar();
@@ -496,12 +508,24 @@ int main(void){
             }
         } else if (menu == 10) {
 
-        } else if (menu == 11) { // 수술 예약            
-            listInfo(plist, index);
-            int num;
-            printf("=> 몇 번 환자의 수술 예약을 추가하시겠습니까? ");
-            scanf("%d", &num);
-            if (surgeryList(plist, index, num) != 1) continue; 
+        } else if (menu == 11) { // 수술 예약 
+            if (count < 1) printf("=> 수술 예약할 환자가 없습니다.(현재 데이터 0개)\n\n");
+            else {          
+                listInfo(plist, index);
+                int num;
+                printf("=> 몇 번 환자의 수술 예약을 추가하시겠습니까? ");
+                scanf("%d", &num);
+                if (surgeryList(plist, index, num) != 1) continue; 
+            }
+        } else if (menu == 12) { // 결제
+            if (count < 1) printf("=> 처리할 결제 정보가 없습니다.(현재 데이터 0개)\n\n");
+            else {          
+                listInfo(plist, index);
+                int num;
+                printf("=> 몇 번 환자의 결제 정보를 추가하시겠습니까? ");
+                scanf("%d", &num);
+                if (pay(plist, index, num) != 1) continue; 
+            }
         }
     }
     printf("=> 종료\n");
