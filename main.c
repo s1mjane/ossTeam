@@ -293,7 +293,7 @@ void writeDiagnosis(Patient *p) {
     scanf("%[^\n]s", p->needSurgery);
     getchar();
     if (strcmp(p->needSurgery, "O")==0) printf("(=> 11번 메뉴를 선택해 수술 예약을 잡으세요.)\n");
-    
+    // 진단서 작성해서 내용이 있는 경우
     strcpy(p->diagcheck, "O");
     return;
 }
@@ -405,17 +405,15 @@ int main(void){
             if (count > 0) {
                 listInfo(plist, index);
                 while(1) {
-
-                    printf("특정 환자의 정보를 조회하고 싶습니까?(확인:1, 취소:0) : ");
+                    printf("특정 환자의 정보를 조회하고 싶습니까? (확인:1, 취소:0) : ");
                     scanf("%d", &infocheck);
                     getchar();
-        
                     if(infocheck == 0) {
                         printf("=> 취소되었습니다.\n");
                         break;
                     } else {
                         printf("\n");
-                        listInfo(plist, index);
+                        // listInfo(plist, index);
                         OnelistInfo(plist, index);
                         printf("추가로 ");
                     }
