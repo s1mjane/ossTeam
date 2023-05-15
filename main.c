@@ -43,11 +43,22 @@ int OnereadInfo(Patient p, int infonum) {
     printf("-----------------------------------------------------------------------------------------------------------\n");
     int len = stringLength(p.address);
     //printf("%d\n", len);
-    if (len <= 16) printf("%s\t%s\t%s\t\t\t\t\t%s\t\t%d\t\t%s\n", p.name, p.phone, p.address, p.diagcheck, p.surgeryDate, p.billok);
-    else if (len <= 32) printf("%s\t%s\t%s\t\t\t\t%s\t\t%d\t\t%s\n", p.name, p.phone, p.address, p.diagcheck, p.surgeryDate, p.billok);
-    else if (len <= 48) printf("%s\t%s\t%s\t\t\t%s\t\t%d\t\t%s\n", p.name, p.phone, p.address, p.diagcheck, p.surgeryDate, p.billok);
-    else if (len <= 64) printf("%s\t%s\t%s\t\t%s\t\t%d\t\t%s\n", p.name, p.phone, p.address, p.diagcheck, p.surgeryDate, p.billok);
-    else if (len <= 96) printf("%s\t%s\t%s\t%s\t\t%d\t\t%s\n", p.name, p.phone, p.address, p.diagcheck, p.surgeryDate, p.billok);
+    if (len <= 16) {
+        if (p.surgeryDate == 0) printf("%s\t%s\t%s\t\t\t\t\t%s\t\t%d\t\t%s\n", p.name, p.phone, p.address, p.diagcheck, p.surgeryDate, p.billok);
+        else printf("%s\t%s\t%s\t\t\t\t\t%s\t%d\t\t%s\n", p.name, p.phone, p.address, p.diagcheck, p.surgeryDate, p.billok);
+    } else if (len <= 32) {
+        if (p.surgeryDate == 0) printf("%s\t%s\t%s\t\t\t\t%s\t\t%d\t\t%s\n", p.name, p.phone, p.address, p.diagcheck, p.surgeryDate, p.billok);
+        else printf("%s\t%s\t%s\t\t\t\t\t%s\t%d\t\t%s\n", p.name, p.phone, p.address, p.diagcheck, p.surgeryDate, p.billok);
+    } else if (len <= 48) {
+        if (p.surgeryDate == 0) printf("%s\t%s\t%s\t\t\t%s\t\t%d\t\t%s\n", p.name, p.phone, p.address, p.diagcheck, p.surgeryDate, p.billok);
+        else printf("%s\t%s\t%s\t\t\t\t\t%s\t%d\t\t%s\n", p.name, p.phone, p.address, p.diagcheck, p.surgeryDate, p.billok);
+    } else if (len <= 64) {
+        if (p.surgeryDate == 0) printf("%s\t%s\t%s\t\t%s\t\t%d\t\t%s\n", p.name, p.phone, p.address, p.diagcheck, p.surgeryDate, p.billok);
+        else printf("%s\t%s\t%s\t\t\t\t\t%s\t\t%d\t%s\n", p.name, p.phone, p.address, p.diagcheck, p.surgeryDate, p.billok);
+    } else if (len <= 96) {
+        if (p.surgeryDate == 0) printf("%s\t%s\t%s\t%s\t\t%d\t\t%s\n", p.name, p.phone, p.address, p.diagcheck, p.surgeryDate, p.billok);
+        else printf("%s\t%s\t%s\t\t\t\t\t%s\t%d\t\t%s\n", p.name, p.phone, p.address, p.diagcheck, p.surgeryDate, p.billok);
+    }
     return 1;
 }
 
