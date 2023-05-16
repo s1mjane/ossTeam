@@ -19,10 +19,10 @@ typedef struct { // 환자 정보 구조체
     char treatment[100]; // 치료 방법
     char recommendation[100]; //예방 및 권고사항
     char medicine[100]; // 약 처방
-    char needSurgery[2]; // 수술필요여부
+    char needSurgery[10]; // 수술필요여부
     char surgeryName[100]; // 수술 이름
     int surgeryDate; // 수술 날짜
-    char diagcheck[2]; // 진단서 작성되었는지 
+    int diagcheck2; // 진단서 작성되었는지 
     char billok[2]; // 결제 여부
 } Patient;
 
@@ -35,29 +35,38 @@ int stringLength(const char* str) {
 
 // [메뉴 1번 세부] 특정환자 세부정보 조회
 int OnereadInfo(Patient p, int infonum) {
+
     if(p.birthday == -1) return 0;
+    char diag[10];
+    
     printf("\n*** %d번 환자의 세부 정보 ***\n", infonum);
     printf("-----------------------------------------------------------------------------------------------------------\n");
     printf("%s\t%s\t%s\t\t\t\t\t%s\t%s\t%s\n", 
             "Name ", "PhoneNumber  ", "Address", "Diagnosis", "수술 날짜", "결제 여부");
     printf("-----------------------------------------------------------------------------------------------------------\n");
     int len = stringLength(p.address);
-    //printf("%d\n", len);
+
+    if(p.diagcheck2 == 1) {
+        strcpy(diag, "있음");
+    } else {
+        strcpy(diag, "없음");
+    }
+
     if (len <= 16) {
-        if (p.surgeryDate == 0) printf("%s\t%s\t%s\t\t\t\t\t%s\t\t%d\t\t%s\n", p.name, p.phone, p.address, p.diagcheck, p.surgeryDate, p.billok);
-        else printf("%s\t%s\t%s\t\t\t\t\t%s\t%d\t\t%s\n", p.name, p.phone, p.address, p.diagcheck, p.surgeryDate, p.billok);
+        if (p.surgeryDate == 0) printf("%s\t%s\t%s\t\t\t\t\t%s\t\t%d\t\t%s\n", p.name, p.phone, p.address, diag, p.surgeryDate, p.billok);
+        else printf("%s\t%s\t%s\t\t\t\t\t%s\t%d\t\t%s\n", p.name, p.phone, p.address, diag, p.surgeryDate, p.billok);
     } else if (len <= 32) {
-        if (p.surgeryDate == 0) printf("%s\t%s\t%s\t\t\t\t%s\t\t%d\t\t%s\n", p.name, p.phone, p.address, p.diagcheck, p.surgeryDate, p.billok);
-        else printf("%s\t%s\t%s\t\t\t\t\t%s\t%d\t\t%s\n", p.name, p.phone, p.address, p.diagcheck, p.surgeryDate, p.billok);
+        if (p.surgeryDate == 0) printf("%s\t%s\t%s\t\t\t\t%s\t\t%d\t\t%s\n", p.name, p.phone, p.address, diag, p.surgeryDate, p.billok);
+        else printf("%s\t%s\t%s\t\t\t\t\t%s\t%d\t\t%s\n", p.name, p.phone, p.address, diag, p.surgeryDate, p.billok);
     } else if (len <= 48) {
-        if (p.surgeryDate == 0) printf("%s\t%s\t%s\t\t\t%s\t\t%d\t\t%s\n", p.name, p.phone, p.address, p.diagcheck, p.surgeryDate, p.billok);
-        else printf("%s\t%s\t%s\t\t\t\t\t%s\t%d\t\t%s\n", p.name, p.phone, p.address, p.diagcheck, p.surgeryDate, p.billok);
+        if (p.surgeryDate == 0) printf("%s\t%s\t%s\t\t\t%s\t\t%d\t\t%s\n", p.name, p.phone, p.address, diag, p.surgeryDate, p.billok);
+        else printf("%s\t%s\t%s\t\t\t\t\t%s\t%d\t\t%s\n", p.name, p.phone, p.address, diag, p.surgeryDate, p.billok);
     } else if (len <= 64) {
-        if (p.surgeryDate == 0) printf("%s\t%s\t%s\t\t%s\t\t%d\t\t%s\n", p.name, p.phone, p.address, p.diagcheck, p.surgeryDate, p.billok);
-        else printf("%s\t%s\t%s\t\t\t\t\t%s\t%d\t\t%s\n", p.name, p.phone, p.address, p.diagcheck, p.surgeryDate, p.billok);
+        if (p.surgeryDate == 0) printf("%s\t%s\t%s\t\t%s\t\t%d\t\t%s\n", p.name, p.phone, p.address, diag, p.surgeryDate, p.billok);
+        else printf("%s\t%s\t%s\t\t\t\t\t%s\t%d\t\t%s\n", p.name, p.phone, p.address, diag, p.surgeryDate, p.billok);
     } else if (len <= 96) {
-        if (p.surgeryDate == 0) printf("%s\t%s\t%s\t%s\t\t%d\t\t%s\n", p.name, p.phone, p.address, p.diagcheck, p.surgeryDate, p.billok);
-        else printf("%s\t%s\t%s\t\t\t\t\t%s\t%d\t\t%s\n", p.name, p.phone, p.address, p.diagcheck, p.surgeryDate, p.billok);
+        if (p.surgeryDate == 0) printf("%s\t%s\t%s\t%s\t\t%d\t\t%s\n", p.name, p.phone, p.address, diag, p.surgeryDate, p.billok);
+        else printf("%s\t%s\t%s\t\t\t\t\t%s\t%d\t\t%s\n", p.name, p.phone, p.address, diag, p.surgeryDate, p.billok);
     }
     return 1;
 }
@@ -77,16 +86,15 @@ void OnelistInfo(Patient *p[], int count) {
 // [메뉴 1번] 환자 정보 조회
 void readInfo(Patient p){
     int len = stringLength(p.department);
-    //printf("len: %d\n", len);
     if (len < 12) printf("%s\t%s\t%d\t%d\t%s\t\t%s\n", p.name, p.sex, p.age, p.birthday, p.department, p.symptom);
     if (len > 11) printf("%s\t%s\t%d\t%d\t%s\t%s\n", p.name, p.sex, p.age, p.birthday, p.department, p.symptom);
 }
 
 // [메뉴 1번] 환자 정보 조회 리스트 (최대 20명)
 void listInfo(Patient *p[], int count){
-    printf("======================================== 환자 진료 예약 리스트 ===================================================\n");
+    printf("================================ 환자 진료 예약 리스트 =======================================\n");
     printf("%s %s\t%s\t%s\t%s\t%s\t%s\n", "No", "Name ", "Sex", "Age", "Birthday   ", "Department", "Symptom");
-    printf("==================================================================================================================\n");
+    printf("==============================================================================================\n");
     for(int i=0; i<count; i++) {
         if(p[i]->birthday == -1) continue;
         printf("%2d ", i+1);
@@ -118,8 +126,9 @@ int addInfo(Patient *p){
     printf("증상: ");
     scanf(" %[^\n]s", p->symptom);
     ch = getchar();
-    strcpy(p->diagcheck, "X");
+    // strcpy(p->diagcheck, "X");
     strcpy(p->billok, "X");
+    p->diagcheck2 = 0;
     
 
     // 생년월일만 입력 받고 나이는 함수 내에서 따로 계산해 저장만 해 둠. 추후 필요할 때 출력.
@@ -161,8 +170,8 @@ int updateInfo(Patient *p){
     printf("증상: ");
     scanf(" %[^\n]s", p->symptom);
     ch = getchar();
-    strcpy(p->diagcheck, "X");
     strcpy(p->billok, "X");
+    p->diagcheck2 = 0;
 
     // 생년월일만 입력 받고 나이는 함수 내에서 따로 계산해 저장만 해 둠. 추후 필요할 때 출력.
     p->age = t->tm_year+1900-(p->birthday/10000)+1;
@@ -183,11 +192,25 @@ void saveData(Patient *p[], int count) {
     fp = fopen("patient.txt","wt"); // 텍스트 쓰는 용도로 파일 오픈
     for (int i = 0; i<count; i++) {
         if (p[i]->birthday != -1) {
-            fprintf(fp, "%s %s %d %d %s %s %s %s\n", p[i]->name, p[i]->sex, p[i]->age, p[i]->birthday, p[i]->phone, p[i]->address, p[i]->department, p[i]->symptom);
+            fprintf(fp, "%s %s %d %d %s %s %s %s %d\n", p[i]->name, p[i]->sex, p[i]->age, p[i]->birthday, p[i]->phone, p[i]->address, p[i]->department, p[i]->symptom, p[i]->diagcheck2);
         }
     } 
     fclose(fp);
-    printf("=> 파일 저장되었습니다.\n\n");
+    printf("=> 환자 리스트 파일 저장되었습니다.\n");
+}
+
+// [메뉴 5번] 진단서 파일 저장
+void DiagsaveData(Patient *p[], int count) {
+    FILE *fp;
+    fp = fopen("diagnosis.txt","wt");
+
+    for (int i = 0; i<count; i++) {
+        if(p[i]->diagcheck2 == 1) {
+            fprintf(fp, "%s\n%s\n%s\n%s\n%s\n%s\n", p[i]->name, p[i]->diagnosis, p[i]->treatment, p[i]->recommendation, p[i]->medicine, p[i]->needSurgery);
+        }
+    } 
+    fclose(fp);
+    printf("=> 진단서 파일 저장되었습니다.\n\n");
 }
 
 // 프로그램 실행시 txt 파일 로드
@@ -199,7 +222,7 @@ int loadData(Patient *p[]) {
     fp = fopen("patient.txt", "rt"); // 읽어오는 용도로 파일 오픈
     
     if (fp == NULL) {
-        printf("파일 로드 중\n==> 저장된 파일이 없습니다.\n");
+        printf("환자 리스트 파일 로드 중\n==> 저장된 환자 리스트 파일이 없습니다.\n");
         return i;
     } 
     for (; i<20; i++) {
@@ -213,6 +236,8 @@ int loadData(Patient *p[]) {
         fscanf(fp, "%s", p[i]->address);
         fscanf(fp, "%s", p[i]->department);
         fscanf(fp, "%s", p[i]->symptom);
+        fscanf(fp, "%d", &p[i]->diagcheck2);
+
         if(p[i] == NULL) {
             free(p[i]); // 동적할당한 것 해제
             i--;
@@ -220,7 +245,7 @@ int loadData(Patient *p[]) {
         }
     }
     fclose(fp);
-    printf("파일 로드 중\n=> 로딩 성공!\n");
+    printf("환자 리스트 파일 로드 중\n=> 로딩 성공!\n");
     return i;
 }
 
@@ -273,6 +298,26 @@ void searchDepartment(Patient *p[], int count) {
     }
 }
 
+// [메뉴 8번] 진단서 작성 여부 출력
+void checkDiagnosis(Patient *p[], int count) {
+    char diag[10];
+    printf("%s %s\t%s\n", "No", "Name ", "진단서 작성 여부");
+    printf("===================================\n");
+    for(int i=0; i<count; i++) {
+        if(p[i]->birthday == -1) continue;
+        if(p[i]->diagcheck2 == 1) {
+            strcpy(diag, "O");
+        } else {
+            strcpy(diag, "X");
+        }
+        printf("%2d ", i+1);
+        //readInfo(*p[i]);
+        printf("%s\t%s\n", p[i]->name, diag);
+    } printf("\n");
+}
+
+
+
 // [메뉴 8번] 진단서 작성
 void writeDiagnosis(Patient *p) {
     getchar();
@@ -293,8 +338,7 @@ void writeDiagnosis(Patient *p) {
     scanf("%[^\n]s", p->needSurgery);
     getchar();
     if (strcmp(p->needSurgery, "O")==0) printf("(=> 11번 메뉴를 선택해 수술 예약을 잡으세요.)\n");
-    // 진단서 작성해서 내용이 있는 경우
-    strcpy(p->diagcheck, "O");
+    p->diagcheck2 = 1;
     printf("=> %s 환자의 진단서가 작성되었습니다.\n=> 진단서는 메뉴 9번으로 조회할 수 있습니다.\n", p->name);
     return;
 }
@@ -306,7 +350,7 @@ void DiagnosisPrint(Patient p){
     printf("치료방법 : %s\n", p.treatment);
     printf("예방 및 권고사항 : %s\n", p.recommendation);
     printf("약 처방 : %s\n", p.medicine);
-    printf("수술 필요 여부(O/X) : %s\n", p.needSurgery);
+    printf("수술 필요 여부(있음/없음) : %s\n", p.needSurgery);
 }
 
 // [for 메뉴 9번] 진단서 작성된 환자 조회 및 선택
@@ -314,20 +358,96 @@ void Diagnosislist(Patient *p[], int count) {
     int num;
     char check;
     printf("=== 진단서가 작성된 환자 목록 ===\n");
-    printf("%s %s\t%s\t%s\t%s\t%s\t%s\t%s\t\t%s\n", "No", "Name ", "Sex", "Age", "Birthday   ", "PhoneNumber  ", "Address", "Department", "Symptom");
-    printf("==============================================================================================\n");
+    printf("%s %s\t%s\t%s\t%s\t%s\t\t%s\n", "No", "Name ", "Sex", "Age", "Birthday   ","Department", "Symptom");
+    printf("=======================================================================================================\n");
     for(int i=0; i<count; i++) {
         if(p[i] == NULL)
             continue;
-        if(strcmp(p[i]->diagcheck, "") != 0) { // 진단서가 작성되었는지 확인
+        if(p[i]->diagcheck2 == 1) {
             printf("%2d ", i+1);
             readInfo(*p[i]);
         }
     }
-    printf("\n진단서를 확인하고 싶은 환자의 번호는? : "); // 진단서를 확인하고 싶은 환자 번호 선택
-    scanf("%d", &num);
-    getchar();
-    DiagnosisPrint(*p[num-1]); // 진단서 
+    
+    while(1) {
+        printf("\n진단서를 확인하고 싶은 환자의 번호는? : "); // 진단서를 확인하고 싶은 환자 번호 선택
+        scanf("%d", &num);
+        getchar();
+        if(num <= 0 || num > count || p[num-1]->diagcheck2 != 1){
+            printf("잘못입력된 번호 입니다.\n");
+        } else {
+            DiagnosisPrint(*p[num-1]); // 진단서 
+            break;
+        }
+    }
+   
+}
+
+int DiagloadData(Patient *p[], int count) {
+    int i = 0;
+    //int count = 0;
+    char str[100];
+    char namecheck[20];
+
+    FILE *fp;
+    fp = fopen("diagnosis.txt", "rt"); // 읽어오는 용도로 파일 오픈
+ 
+    if (fp == NULL) {
+		printf("==> 저장된 진단서 파일이 없습니다.\n");
+		return i;
+	}
+
+    for (i=0; i<count; i++) {
+        if (feof(fp)) {
+            printf("end\n");
+            break; // 파일 끝을 만났을 때
+        }
+
+        if(p[i]->diagcheck2 != 1) {
+            continue;
+        }
+
+        fgets(namecheck, sizeof(namecheck), fp);
+        namecheck[strlen(namecheck)-1] = '\0';
+    
+        if(strcmp(namecheck, p[i]->name) == 0) {
+            if(fgets(p[i]->diagnosis, sizeof(p[i]->diagnosis), fp) == NULL) {
+                printf("diagnosis NULL\n");
+            }
+            p[i]->diagnosis[strlen(p[i]->diagnosis)-1] = '\0';
+
+            if(fgets(p[i]->treatment, sizeof(p[i]->treatment), fp) == NULL) {
+                printf("treatment NULL\n");
+            }
+            p[i]->treatment[strlen(p[i]->treatment)-1] = '\0';
+
+            if(fgets(p[i]->recommendation, sizeof(p[i]->recommendation), fp) == NULL) {
+                printf("recommendation NULL\n");
+            }
+            p[i]->recommendation[strlen(p[i]->recommendation)-1] = '\0';
+
+            if(fgets(p[i]->medicine, sizeof(p[i]->medicine), fp) == NULL) {
+                printf("recommendation NULL\n");
+            }
+            p[i]->medicine[strlen(p[i]->medicine)-1] = '\0';
+
+            if(fgets(p[i]->needSurgery, sizeof(p[i]->needSurgery), fp) == NULL) {
+                printf("needSurgery NULL\n");
+            }
+            p[i]->needSurgery[strlen(p[i]->needSurgery)-1] = '\0';
+        } else {
+            continue;
+        }
+
+        if(p[i] == NULL) {
+            free(p[i]); // 동적할당한 것 해제
+            i--;
+            continue;
+        }
+    }
+    fclose(fp);
+    printf("진단서 파일 파일 로드 중\n=> 로딩 성공!\n\n");
+    return i;
 }
 
 
@@ -393,7 +513,7 @@ int selectMenu(){
     int menu;
     printf("\n🏥 병원 환자 관리 시스템 🖥️\n");
     printf("1. 환자 조회\t2. 환자 추가\t3. 환자 정보 수정\t4. 환자 정보 삭제\n");
-    printf("5. 파일 저장\t6. 환자 검색\t7. 과별 환자 정보\t8. 진단서 추가\n");
+    printf("5. 파일 저장\t6. 환자 검색\t7. 과별 환자 정보 검색\t8. 진단서 추가\n");
     printf("9. 진단서 조회\t10. 처방전 조회\t11. 수술 예약\t\t12. 결제\t0. 종료\n");
     printf("====> 원하는 메뉴: ");
     scanf("%d", &menu);
@@ -411,8 +531,10 @@ int main(void){
 
     int infocheck;
     Patient *plist[20]; // README.md 파일에 20명이라고 해놔서 100명->20명으로 고쳤어요!
+    
     count = loadData(plist);
     index = count;
+    diagcount = DiagloadData(plist, index);
 
     while (1){
         menu = selectMenu();
@@ -428,7 +550,6 @@ int main(void){
                         printf("=> 취소되었습니다.\n");
                         break;
                     } else { 
-                        printf("\n");
                         // listInfo(plist, index);
                         OnelistInfo(plist, index);
                         printf("추가로 ");
@@ -442,6 +563,7 @@ int main(void){
             else {
                 plist[index] = (Patient *)malloc(sizeof(Patient));
                 count += addInfo(plist[index++]);
+                diagcount++;
             }
         }
         else if (menu == 3) { // 환자 정보 수정 
@@ -481,7 +603,10 @@ int main(void){
         }
         else if (menu == 5) { // 파일 저장
             if (count == 0) printf("=> 저장할 데이터가 없습니다.\n\n");
-            else saveData(plist, index);
+            else {
+                saveData(plist, index);
+                DiagsaveData(plist, index);
+            }
         }
         else if (menu == 6) { // 파일에서 이름 검색
             if (count == 0) printf("=> 데이터가 없습니다.\n\n");
@@ -495,7 +620,8 @@ int main(void){
             if (count < 1) printf("=> 아직 진단서를 작성할 환자가 없습니다.(현재 데이터 0개)\n\n");
             else {
                 printf("=> 진단서 작성할 환자\n");
-                listInfo(plist, index);
+                //listInfo(plist, index);
+                checkDiagnosis(plist, index);
                 int num = selectNum();
                 if(num == 0){
                     printf("=> 취소되었습니다.\n");
