@@ -192,7 +192,7 @@ void saveData(Patient *p[], int count) {
     fp = fopen("patient.txt","wt"); // 텍스트 쓰는 용도로 파일 오픈
     for (int i = 0; i<count; i++) {
         if (p[i]->birthday != -1) {
-            fprintf(fp, "%s %s %d %d %s %s %s %s %d\n", p[i]->name, p[i]->sex, p[i]->age, p[i]->birthday, p[i]->phone, p[i]->address, p[i]->department, p[i]->symptom, p[i]->diagcheck2);
+            fprintf(fp, "%s %s %d %d %s %s %s %s %d %s\n", p[i]->name, p[i]->sex, p[i]->age, p[i]->birthday, p[i]->phone, p[i]->address, p[i]->department, p[i]->symptom, p[i]->diagcheck2, p[i]->billok);
         }
     } 
     fclose(fp);
@@ -237,6 +237,7 @@ int loadData(Patient *p[]) {
         fscanf(fp, "%s", p[i]->department);
         fscanf(fp, "%s", p[i]->symptom);
         fscanf(fp, "%d", &p[i]->diagcheck2);
+        fscanf(fp, "%s", p[i]->billok);
 
         if(p[i] == NULL) {
             free(p[i]); // 동적할당한 것 해제
