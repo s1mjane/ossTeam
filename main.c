@@ -215,7 +215,7 @@ void DiagsaveData(Patient *p[], int count) {
     printf("=> 진단서 파일 저장되었습니다.\n\n");
 }
 
-// 프로그램 실행시 txt 파일 로드
+// 프로그램 실행시 환자  txt 파일 로드
 int loadData(Patient *p[]) {
     int i = 0;
     int count = 0;
@@ -389,6 +389,7 @@ void Diagnosislist(Patient *p[], int count) {
    
 }
 
+// 프로그램 실행시 진단서 txt 파일 
 int DiagloadData(Patient *p[], int count) {
     int i = 0;
     int countdiag = 0;
@@ -540,9 +541,9 @@ int main(void){
     int infocheck;
     Patient *plist[20]; // README.md 파일에 20명이라고 해놔서 100명->20명으로 고쳤어요!
     
-    count = loadData(plist);
+    count = loadData(plist); // 환자 리스트 로드
     index = count;
-    diagcount = DiagloadData(plist, index);
+    diagcount = DiagloadData(plist, index); // 
 
     while (1){
         menu = selectMenu();
