@@ -192,7 +192,9 @@ void saveData(Patient *p[], int count) {
     fp = fopen("patient.txt","wt"); // 텍스트 쓰는 용도로 파일 오픈
     for (int i = 0; i<count; i++) {
         if (p[i]->birthday != -1) {
-            fprintf(fp, "%s %s %d %d %s %s %s %s %d\n", p[i]->name, p[i]->sex, p[i]->age, p[i]->birthday, p[i]->phone, p[i]->address, p[i]->department, p[i]->symptom, p[i]->diagcheck2);
+            fprintf(fp, "%s %s %d %d %s %s %d %s\n", p[i]->name, p[i]->sex, p[i]->age, p[i]->birthday, p[i]->phone, p[i]->department, p[i]->diagcheck2, p[i]->billok);
+            fprintf(fp, "%s\n", p[i]->address);
+            fprintf(fp, "%s\n", p[i]->symptom);
         }
     } 
     fclose(fp);
@@ -213,7 +215,7 @@ void DiagsaveData(Patient *p[], int count) {
     printf("=> 진단서 파일 저장되었습니다.\n\n");
 }
 
-// 프로그램 실행시 txt 파일 로드
+// 프로그램 실행시 환자  txt 파일 로드
 int loadData(Patient *p[]) {
     int i = 0;
     int count = 0;
@@ -233,10 +235,14 @@ int loadData(Patient *p[]) {
         fscanf(fp, "%d", &p[i]->age);
         fscanf(fp, "%d", &p[i]->birthday);
         fscanf(fp, "%s", p[i]->phone);
-        fscanf(fp, "%s", p[i]->address);
         fscanf(fp, "%s", p[i]->department);
-        fscanf(fp, "%s", p[i]->symptom);
         fscanf(fp, "%d", &p[i]->diagcheck2);
+        fscanf(fp, "%s", p[i]->billok);
+        fgetc(fp);
+        fgets(p[i]->address, sizeof(p[i]->address), fp);
+        p[i]->address[strlen(p[i]->address)-1] = '\0';
+        fgets(p[i]->symptom, sizeof(p[i]->symptom), fp);
+        p[i]->symptom[strlen(p[i]->symptom)-1] = '\0';
 
         if(p[i] == NULL) {
             free(p[i]); // 동적할당한 것 해제
@@ -383,9 +389,10 @@ void Diagnosislist(Patient *p[], int count) {
    
 }
 
+// 프로그램 실행시 진단서 txt 파일 
 int DiagloadData(Patient *p[], int count) {
     int i = 0;
-    //int count = 0;
+    int countdiag = 0;
     char str[100];
     char namecheck[20];
 
@@ -435,6 +442,8 @@ int DiagloadData(Patient *p[], int count) {
                 printf("needSurgery NULL\n");
             }
             p[i]->needSurgery[strlen(p[i]->needSurgery)-1] = '\0';
+
+            countdiag++;
         } else {
             continue;
         }
@@ -447,7 +456,7 @@ int DiagloadData(Patient *p[], int count) {
     }
     fclose(fp);
     printf("진단서 파일 파일 로드 중\n=> 로딩 성공!\n\n");
-    return i;
+    return countdiag;
 }
 
 
@@ -620,7 +629,6 @@ int main(void){
             if (count < 1) printf("=> 아직 진단서를 작성할 환자가 없습니다.(현재 데이터 0개)\n\n");
             else {
                 printf("=> 진단서 작성할 환자\n");
-                //listInfo(plist, index);
                 checkDiagnosis(plist, index);
                 int num = selectNum();
                 if(num == 0){
@@ -658,7 +666,6 @@ int main(void){
             }
         }
     }
-    
     printf("=> 종료\n");
     return 0;
 }
