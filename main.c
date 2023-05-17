@@ -644,9 +644,7 @@ int main(void){
             else{
                 Diagnosislist(plist, index);
             }
-        } else if (menu == 10) {
-
-        } else if (menu == 11) { // 수술 예약 
+        } else if (menu == 10) { // 수술 예약 
             if (count < 1) printf("=> 수술 예약할 환자가 없습니다.(현재 데이터 0개)\n\n");
             else {          
                 listInfo(plist, index);
@@ -655,6 +653,8 @@ int main(void){
                 scanf("%d", &num);
                 if (surgeryList(plist, index, num) != 1) continue; 
             }
+        } else if (menu == 11) { // 결제 청구
+		
         } else if (menu == 12) { // 결제
             if (count < 1) printf("=> 처리할 결제 정보가 없습니다.(현재 데이터 0개)\n\n");
             else {          
