@@ -360,12 +360,20 @@ void writeDiagnosis(Patient *p) {
 
 // [메뉴 9번] 선택된 환자의 진단서 출력
 void DiagnosisPrint(Patient p){
-    printf("\n=== %s 환자 진단서 ===\n", p.name);
-    printf("진단(병명) : %s\n", p.diagnosis);
-    printf("치료방법 : %s\n", p.treatment);
-    printf("예방 및 권고사항 : %s\n", p.recommendation);
-    printf("약 처방 : %s\n", p.medicine);
-    printf("수술 필요 여부(있음/없음) : %s\n", p.needSurgery);
+    time_t t = time(NULL);  // 현재 시간을 가져옴
+    struct tm *now = localtime(&t);  // 지역 시간으로 변환
+    printf("\n===== ♡ %s 환자 진단서 ♡ =====\n", p.name);
+    printf("| 환자명 : %s\n", p.name);
+    printf("| 성별 : %s\n", p.sex);
+    printf("| 나이 : %d\n", p.age);
+    printf("| 진단(병명) : %s\n", p.diagnosis);
+    printf("| 치료방법 : %s\n", p.treatment);
+    printf("| 예방 및 권고사항 : %s\n", p.recommendation);
+    printf("| 약 처방 : %s\n", p.medicine);
+    printf("| 수술 필요 여부 : %s\n", p.needSurgery);
+    printf("| \n");
+    printf("| OSS 병원 %s %d.%d.%d\n", p.department, now->tm_year+1900, now->tm_mon+1, now->tm_mday);
+    printf("==================================\n");
 }
 
 // [for 메뉴 9번] 진단서 작성된 환자 조회 및 선택
