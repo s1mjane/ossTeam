@@ -508,7 +508,6 @@ int surgeryList(Patient *p[], int count, int num) {
                 p[num-1]->surgeryDate = ok.surgeryDate;
                 printf("=> %s 환자의 수술 예약이 추가되었습니다.\n=> 예약 정보는 '메뉴 1번' 환자 조회의 세부 정보 조회로 확인할 수 있습니다.\n\n", p[num-1]->name);
                 p[num-1]->surgerycheck = 1;
-                //Longstay(*p[num-1]);
                 return 1;
                 break;
             } else { // 날짜 겹쳐서 안 되는 경우
@@ -518,7 +517,6 @@ int surgeryList(Patient *p[], int count, int num) {
             p[num-1]->surgeryDate = ok.surgeryDate;
             p[num-1]->surgerycheck = 1;
             printf("=> %s 환자의 수술 예약이 추가되었습니다. 예약 정보는 메뉴 1번 환자 조회의 세부 정보 조회로 확인할 수 있습니다.\n\n", p[num-1]->name);
-            //Longstay(*p[num-1]);
             return 1;
             break;
         }
@@ -624,7 +622,6 @@ int main(void){
                         printf("=> 취소되었습니다.\n");
                         break;
                     } else { 
-                        // listInfo(plist, index);
                         OnelistInfo(plist, index);
                         printf("추가로 ");
                     }
@@ -718,7 +715,7 @@ int main(void){
                 printf("=> 몇 번 환자의 수술 예약을 추가하시겠습니까? ");
                 scanf("%d", &num);
                 if (surgeryList(plist, index, num) != 1) continue; 
-                Longstay(plist, count, num);
+                Longstay(plist, count, num); // 입원 수속
             }
         } else if (menu == 11) { // 결제 청구
             listInfo(plist, index);
