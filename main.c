@@ -267,6 +267,66 @@ int loadData(Patient *p[]) {
     return i;
 }
 
+// 프로그램 실행시 진단서 txt 파일 
+int DiagloadData(Patient *p[], int count) {
+    int i = 0;
+    int countdiag = 0;
+    char str[100];
+    char namecheck[20];
+
+    FILE *fp;
+    fp = fopen("diagnosis.txt", "rt"); // 읽어오는 용도로 파일 오픈
+ 
+    if (fp == NULL) {
+		printf("==> 저장된 진단서 파일이 없습니다.\n");
+		return i;
+	}
+
+    for (i=0; i<count; i++) {
+        if (feof(fp)) {
+            printf("end\n");
+            break; // 파일 끝을 만났을 때
+        }
+
+        if(p[i]->diagcheck2 != 1) {
+            continue;
+        }
+
+        fgets(namecheck, sizeof(namecheck), fp);
+        namecheck[strlen(namecheck)-1] = '\0';
+    
+        if(strcmp(namecheck, p[i]->name) == 0) {
+            fgets(p[i]->diagnosis, sizeof(p[i]->diagnosis), fp);
+            p[i]->diagnosis[strlen(p[i]->diagnosis)-1] = '\0';
+
+            fgets(p[i]->treatment, sizeof(p[i]->treatment), fp);
+            p[i]->treatment[strlen(p[i]->treatment)-1] = '\0';
+
+            fgets(p[i]->recommendation, sizeof(p[i]->recommendation), fp);
+            p[i]->recommendation[strlen(p[i]->recommendation)-1] = '\0';
+
+            fgets(p[i]->medicine, sizeof(p[i]->medicine), fp);
+            p[i]->medicine[strlen(p[i]->medicine)-1] = '\0';
+
+            fgets(p[i]->needSurgery, sizeof(p[i]->needSurgery), fp);
+            p[i]->needSurgery[strlen(p[i]->needSurgery)-1] = '\0';
+
+            countdiag++;
+        } else {
+            continue;
+        }
+
+        if(p[i] == NULL) {
+            free(p[i]); // 동적할당한 것 해제
+            i--;
+            continue;
+        }
+    }
+    fclose(fp);
+    printf("진단서 파일 파일 로드 중\n=> 로딩 성공!\n\n");
+    return countdiag;
+}
+
 // [메뉴 6번] 환자 이름 검색
 void searchName(Patient *p[], int count) {
     int pcount = 0;
@@ -408,77 +468,7 @@ void Diagnosislist(Patient *p[], int count) {
     }
 }
 
-// 프로그램 실행시 진단서 txt 파일 
-int DiagloadData(Patient *p[], int count) {
-    int i = 0;
-    int countdiag = 0;
-    char str[100];
-    char namecheck[20];
-
-    FILE *fp;
-    fp = fopen("diagnosis.txt", "rt"); // 읽어오는 용도로 파일 오픈
- 
-    if (fp == NULL) {
-		printf("==> 저장된 진단서 파일이 없습니다.\n");
-		return i;
-	}
-
-    for (i=0; i<count; i++) {
-        if (feof(fp)) {
-            printf("end\n");
-            break; // 파일 끝을 만났을 때
-        }
-
-        if(p[i]->diagcheck2 != 1) {
-            continue;
-        }
-
-        fgets(namecheck, sizeof(namecheck), fp);
-        namecheck[strlen(namecheck)-1] = '\0';
-    
-        if(strcmp(namecheck, p[i]->name) == 0) {
-            if(fgets(p[i]->diagnosis, sizeof(p[i]->diagnosis), fp) == NULL) {
-                printf("diagnosis NULL\n");
-            }
-            p[i]->diagnosis[strlen(p[i]->diagnosis)-1] = '\0';
-
-            if(fgets(p[i]->treatment, sizeof(p[i]->treatment), fp) == NULL) {
-                printf("treatment NULL\n");
-            }
-            p[i]->treatment[strlen(p[i]->treatment)-1] = '\0';
-
-            if(fgets(p[i]->recommendation, sizeof(p[i]->recommendation), fp) == NULL) {
-                printf("recommendation NULL\n");
-            }
-            p[i]->recommendation[strlen(p[i]->recommendation)-1] = '\0';
-
-            if(fgets(p[i]->medicine, sizeof(p[i]->medicine), fp) == NULL) {
-                printf("recommendation NULL\n");
-            }
-            p[i]->medicine[strlen(p[i]->medicine)-1] = '\0';
-
-            if(fgets(p[i]->needSurgery, sizeof(p[i]->needSurgery), fp) == NULL) {
-                printf("needSurgery NULL\n");
-            }
-            p[i]->needSurgery[strlen(p[i]->needSurgery)-1] = '\0';
-
-            countdiag++;
-        } else {
-            continue;
-        }
-
-        if(p[i] == NULL) {
-            free(p[i]); // 동적할당한 것 해제
-            i--;
-            continue;
-        }
-    }
-    fclose(fp);
-    printf("진단서 파일 파일 로드 중\n=> 로딩 성공!\n\n");
-    return countdiag;
-}
-
-// 입원 수속 
+// [for 메뉴 10번] 수술 예약 추가시 입원 수속 
 void Longstay(Patient *p[], int count, int num) {
 
         printf("\n=== 입원 수속 ===\n");
