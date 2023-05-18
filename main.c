@@ -202,7 +202,7 @@ void saveData(Patient *p[], int count) {
     fp = fopen("patient.txt","wt"); // 텍스트 쓰는 용도로 파일 오픈
     for (int i = 0; i<count; i++) {
         if (p[i]->birthday != -1) {
-            fprintf(fp, "%s %s %d %d %s %s %d %s %d\n", p[i]->name, p[i]->sex, p[i]->age, p[i]->birthday, p[i]->phone, p[i]->department, p[i]->diagcheck2, p[i]->billok, p[i]->longstaycheck);
+            fprintf(fp, "%s %s %d %d %s %s %d %s %d %d\n", p[i]->name, p[i]->sex, p[i]->age, p[i]->birthday, p[i]->phone, p[i]->department, p[i]->diagcheck2, p[i]->billok, p[i]->longstaycheck, p[i]->surgeryDate);
             fprintf(fp, "%s\n", p[i]->address);
             fprintf(fp, "%s\n", p[i]->symptom);
         }
@@ -249,6 +249,7 @@ int loadData(Patient *p[]) {
         fscanf(fp, "%d", &p[i]->diagcheck2);
         fscanf(fp, "%s", p[i]->billok);
         fscanf(fp, "%d", &p[i]->longstaycheck);
+        fscanf(fp, "%d", &p[i]->surgeryDate);
         fgetc(fp);
         fgets(p[i]->address, sizeof(p[i]->address), fp);
         p[i]->address[strlen(p[i]->address)-1] = '\0';
