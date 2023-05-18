@@ -351,7 +351,7 @@ void writeDiagnosis(Patient *p) {
     printf("수술 필요 여부(O/X) : ");
     scanf("%[^\n]s", p->needSurgery);
     getchar();
-    if (strcmp(p->needSurgery, "O")==0) printf("=> 11번 메뉴를 선택해 수술 예약을 잡으세요.\n");
+    if (strcmp(p->needSurgery, "O")==0) printf("=> 10번 메뉴를 선택해 수술 예약을 잡으세요.\n");
     p->diagcheck2 = 1;
     printf("=> %s 환자의 진단서가 작성되었습니다.\n=> 진단서는 메뉴 9번으로 조회할 수 있습니다.\n", p->name);
     return;
@@ -477,7 +477,7 @@ void Longstay(Patient *p[], int count, int num) {
         scanf("%d", &p[num-1]->longstay);
         getchar();
         printf("\n[1인실 : 10만원 / 2인실 : 2만원 / 4인실 : 5000원]\n");
-        printf("몇인실을 원하십니까?(숫자만) : ");
+        printf("몇인실을 원하십니까? (숫자만) : ");
         scanf("%d", &p[num-1]->room);
         getchar();
         p[num-1]->longstaycheck = 1;
