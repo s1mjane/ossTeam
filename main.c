@@ -23,6 +23,15 @@ typedef struct { // 환자 정보 구조체
     char surgeryName[100]; // 수술 이름
     int surgeryDate; // 수술 날짜
     int diagcheck2; // 진단서 작성되었는지 
+    int surgerycheck; //수술 진행 여부
+    int longstay; // 입원 기간
+    int room; // 몇인실
+    int longstaycheck;
+
+    // 결제 정보
+    int medicalfee; // 진료비
+    int surgeryfee; // 수술비
+    int totalfee; // 전체 결제비
     char billok[2]; // 결제 여부
 } Patient;
 
@@ -129,7 +138,7 @@ int addInfo(Patient *p){
     // strcpy(p->diagcheck, "X");
     strcpy(p->billok, "X");
     p->diagcheck2 = 0;
-    
+    p->longstaycheck = 0;
 
     // 생년월일만 입력 받고 나이는 함수 내에서 따로 계산해 저장만 해 둠. 추후 필요할 때 출력.
     p->age = t->tm_year+1900-(p->birthday/10000)+1;
@@ -172,6 +181,7 @@ int updateInfo(Patient *p){
     ch = getchar();
     strcpy(p->billok, "X");
     p->diagcheck2 = 0;
+    p->longstaycheck = 0;
 
     // 생년월일만 입력 받고 나이는 함수 내에서 따로 계산해 저장만 해 둠. 추후 필요할 때 출력.
     p->age = t->tm_year+1900-(p->birthday/10000)+1;
@@ -192,7 +202,7 @@ void saveData(Patient *p[], int count) {
     fp = fopen("patient.txt","wt"); // 텍스트 쓰는 용도로 파일 오픈
     for (int i = 0; i<count; i++) {
         if (p[i]->birthday != -1) {
-            fprintf(fp, "%s %s %d %d %s %s %d %s\n", p[i]->name, p[i]->sex, p[i]->age, p[i]->birthday, p[i]->phone, p[i]->department, p[i]->diagcheck2, p[i]->billok);
+            fprintf(fp, "%s %s %d %d %s %s %d %s %d\n", p[i]->name, p[i]->sex, p[i]->age, p[i]->birthday, p[i]->phone, p[i]->department, p[i]->diagcheck2, p[i]->billok, p[i]->longstaycheck);
             fprintf(fp, "%s\n", p[i]->address);
             fprintf(fp, "%s\n", p[i]->symptom);
         }
@@ -238,6 +248,7 @@ int loadData(Patient *p[]) {
         fscanf(fp, "%s", p[i]->department);
         fscanf(fp, "%d", &p[i]->diagcheck2);
         fscanf(fp, "%s", p[i]->billok);
+        fscanf(fp, "%d", &p[i]->longstaycheck);
         fgetc(fp);
         fgets(p[i]->address, sizeof(p[i]->address), fp);
         p[i]->address[strlen(p[i]->address)-1] = '\0';
@@ -317,12 +328,9 @@ void checkDiagnosis(Patient *p[], int count) {
             strcpy(diag, "X");
         }
         printf("%2d ", i+1);
-        //readInfo(*p[i]);
         printf("%s\t%s\n", p[i]->name, diag);
     } printf("\n");
 }
-
-
 
 // [메뉴 8번] 진단서 작성
 void writeDiagnosis(Patient *p) {
@@ -376,17 +384,19 @@ void Diagnosislist(Patient *p[], int count) {
     }
     
     while(1) {
-        printf("\n진단서를 확인하고 싶은 환자의 번호는? : "); // 진단서를 확인하고 싶은 환자 번호 선택
+        printf("\n진단서를 확인하고 싶은 환자의 번호는?(취소:0) : "); // 진단서를 확인하고 싶은 환자 번호 선택
         scanf("%d", &num);
         getchar();
-        if(num <= 0 || num > count || p[num-1]->diagcheck2 != 1){
+        if(num == 0) {
+            printf("=> 취소되었습니다.\n");
+            break;
+        }else if(num < 0 || num > count || p[num-1]->diagcheck2 != 1){
             printf("잘못입력된 번호 입니다.\n");
         } else {
             DiagnosisPrint(*p[num-1]); // 진단서 
             break;
         }
     }
-   
 }
 
 // 프로그램 실행시 진단서 txt 파일 
@@ -459,11 +469,21 @@ int DiagloadData(Patient *p[], int count) {
     return countdiag;
 }
 
+// 입원 수속 (미완성)
+void Longstay(Patient p) {
+    printf("\n=== 입원 수속 ===\n");
+    printf("며칠동안 입원하실 예정입니까? : ");
+    scanf("%d", &p.longstay);
+    getchar();
+    printf("\n[1인실 : 10만원 / 2인실 : 2만원 / 4인실 : 5000원]\n");
+    printf("몇인실을 원하십니까?(숫자만) : ");
+    scanf("%d", &p.room);
+    getchar();
+    p.longstaycheck = 1;
+    printf("%d\n",p.longstaycheck);
+}
 
-// [메뉴 10번] 처방전 조회
-
-
-// [for 메뉴 11번] 수술 예약 추가시 날짜 가능 확인 여부 조회하는 함수
+// [for 메뉴 10번] 수술 예약 추가시 날짜 가능 확인 여부 조회하는 함수
 int isAvailableDate(Patient *p[], int count, int date) {
     for (int i=0; i<count; i++) {
         if (p[i]==NULL) continue;
@@ -472,7 +492,7 @@ int isAvailableDate(Patient *p[], int count, int date) {
     return 1; // 겹치는 날짜 없을 때 1 리턴
 }
 
-// [메뉴 11번] 수술 예약
+// [메뉴 10번] 수술 예약
 int surgeryList(Patient *p[], int count, int num) {
     Patient ok; // 예약 추가하기 전에 잠깐 넣어놓을 용도
     // 잠깐 넣어놓을 곳으로 일단 정보 받음
@@ -487,6 +507,8 @@ int surgeryList(Patient *p[], int count, int num) {
             if (isAvailableDate(p, count, ok.surgeryDate) == 1) {
                 p[num-1]->surgeryDate = ok.surgeryDate;
                 printf("=> %s 환자의 수술 예약이 추가되었습니다.\n=> 예약 정보는 '메뉴 1번' 환자 조회의 세부 정보 조회로 확인할 수 있습니다.\n\n", p[num-1]->name);
+                p[num-1]->surgerycheck = 1;
+                //Longstay(*p[num-1]);
                 return 1;
                 break;
             } else { // 날짜 겹쳐서 안 되는 경우
@@ -494,11 +516,65 @@ int surgeryList(Patient *p[], int count, int num) {
             }
         } else { // 맨 처음 추가인 경우 무조건 추가 가능
             p[num-1]->surgeryDate = ok.surgeryDate;
+            p[num-1]->surgerycheck = 1;
             printf("=> %s 환자의 수술 예약이 추가되었습니다. 예약 정보는 메뉴 1번 환자 조회의 세부 정보 조회로 확인할 수 있습니다.\n\n", p[num-1]->name);
+            //Longstay(*p[num-1]);
             return 1;
             break;
         }
     }
+}
+
+// [메뉴 11번] 결제 청구
+int createbill(Patient *p[]) {
+    int num;
+    int billofroom = 0;
+    char c;
+
+    printf("=> 결제 정보를 입력할 환자 번호(취소:0) : ");
+    scanf("%d", &num);
+    getchar();
+
+    if(num == 0) {
+        printf("=> 취소되었습니다.\n");
+        return 0;
+    }
+
+    printf("\n진료비 : ");
+    scanf("%d", &p[num-1]->medicalfee);
+    getchar();
+
+    if(p[num-1]->surgerycheck == 1) {
+        printf("수술비 : ");
+        scanf("%d", &p[num-1]->surgeryfee);
+        getchar();
+    }
+
+    printf("- 환자가 입원을 했습니까?(y) : ");
+    scanf("%c", &c);
+    getchar();
+
+    if(c == 'y' || c == 'Y') {
+        printf("환자가 입원한 날짜는 며칠입니까?(숫자만) : ");
+        scanf("%d", &p[num-1]->longstay);
+        getchar();
+        printf("환자가 사용한 방은 몇인실 입니까?(숫자만) : ");
+        scanf("%d", &p[num-1]->room);
+        getchar();
+    }
+
+    if(p[num-1]->room == 1) {
+        billofroom = 100000 * p[num-1]->longstay;
+    } else if(p[num-1]->room == 2) {
+        billofroom = 20000 * p[num-1]->longstay;
+    } else if(p[num-1]->room == 4) {
+        billofroom = 5000 * p[num-1]->longstay;
+    }
+    
+    printf("입원비 : %d\n", billofroom);
+    p[num-1]->totalfee = p[num-1]->medicalfee + p[num-1]->surgeryfee + billofroom;
+    printf("\n[총 진료비 : %d원]\n",p[num-1]->totalfee);
+    return 1;
 }
 
 // [메뉴 12번] 결제
@@ -523,7 +599,7 @@ int selectMenu(){
     printf("\n🏥 병원 환자 관리 시스템 🖥️\n");
     printf("1. 환자 조회\t2. 환자 추가\t3. 환자 정보 수정\t4. 환자 정보 삭제\n");
     printf("5. 파일 저장\t6. 환자 검색\t7. 과별 환자 정보 검색\t8. 진단서 추가\n");
-    printf("9. 진단서 조회\t10. 처방전 조회\t11. 수술 예약\t\t12. 결제\t0. 종료\n");
+    printf("9. 진단서 조회\t10. 수술 예약\t11. 결제 청구\t\t12. 결제\t0. 종료\n");
     printf("====> 원하는 메뉴: ");
     scanf("%d", &menu);
     getchar();
@@ -541,9 +617,9 @@ int main(void){
     int infocheck;
     Patient *plist[20]; // README.md 파일에 20명이라고 해놔서 100명->20명으로 고쳤어요!
     
-    count = loadData(plist);
+    count = loadData(plist); // 환자 리스트 로드
     index = count;
-    diagcount = DiagloadData(plist, index);
+    diagcount = DiagloadData(plist, index); // 
 
     while (1){
         menu = selectMenu();
@@ -644,6 +720,7 @@ int main(void){
             else{
                 Diagnosislist(plist, index);
             }
+
         } else if (menu == 10) { // 수술 예약 
             if (count < 1) printf("=> 수술 예약할 환자가 없습니다.(현재 데이터 0개)\n\n");
             else {          
@@ -654,7 +731,9 @@ int main(void){
                 if (surgeryList(plist, index, num) != 1) continue; 
             }
         } else if (menu == 11) { // 결제 청구
-		
+            listInfo(plist, index);
+            createbill(plist);
+
         } else if (menu == 12) { // 결제
             if (count < 1) printf("=> 처리할 결제 정보가 없습니다.(현재 데이터 0개)\n\n");
             else {          
