@@ -469,18 +469,19 @@ int DiagloadData(Patient *p[], int count) {
     return countdiag;
 }
 
-// 입원 수속 (미완성)
-void Longstay(Patient p) {
-    printf("\n=== 입원 수속 ===\n");
-    printf("며칠동안 입원하실 예정입니까? : ");
-    scanf("%d", &p.longstay);
-    getchar();
-    printf("\n[1인실 : 10만원 / 2인실 : 2만원 / 4인실 : 5000원]\n");
-    printf("몇인실을 원하십니까?(숫자만) : ");
-    scanf("%d", &p.room);
-    getchar();
-    p.longstaycheck = 1;
-    printf("%d\n",p.longstaycheck);
+// 입원 수속 
+void Longstay(Patient *p[], int count, int num) {
+
+        printf("\n=== 입원 수속 ===\n");
+        printf("며칠동안 입원하실 예정입니까? : ");
+        scanf("%d", &p[num-1]->longstay);
+        getchar();
+        printf("\n[1인실 : 10만원 / 2인실 : 2만원 / 4인실 : 5000원]\n");
+        printf("몇인실을 원하십니까?(숫자만) : ");
+        scanf("%d", &p[num-1]->room);
+        getchar();
+        p[num-1]->longstaycheck = 1;
+        printf("%d\n",p[num-1]->longstaycheck);
 }
 
 // [for 메뉴 10번] 수술 예약 추가시 날짜 가능 확인 여부 조회하는 함수
@@ -550,25 +551,14 @@ int createbill(Patient *p[]) {
         getchar();
     }
 
-    printf("- 환자가 입원을 했습니까?(y) : ");
-    scanf("%c", &c);
-    getchar();
-
-    if(c == 'y' || c == 'Y') {
-        printf("환자가 입원한 날짜는 며칠입니까?(숫자만) : ");
-        scanf("%d", &p[num-1]->longstay);
-        getchar();
-        printf("환자가 사용한 방은 몇인실 입니까?(숫자만) : ");
-        scanf("%d", &p[num-1]->room);
-        getchar();
-    }
-
-    if(p[num-1]->room == 1) {
-        billofroom = 100000 * p[num-1]->longstay;
-    } else if(p[num-1]->room == 2) {
-        billofroom = 20000 * p[num-1]->longstay;
-    } else if(p[num-1]->room == 4) {
-        billofroom = 5000 * p[num-1]->longstay;
+    if(p[num-1]->longstaycheck == 1) {
+        if(p[num-1]->room == 1) {
+            billofroom = 100000 * p[num-1]->longstay;
+        } else if(p[num-1]->room == 2) {
+            billofroom = 20000 * p[num-1]->longstay;
+        } else if(p[num-1]->room == 4) {
+            billofroom = 5000 * p[num-1]->longstay;
+        }
     }
     
     printf("입원비 : %d\n", billofroom);
@@ -729,6 +719,7 @@ int main(void){
                 printf("=> 몇 번 환자의 수술 예약을 추가하시겠습니까? ");
                 scanf("%d", &num);
                 if (surgeryList(plist, index, num) != 1) continue; 
+                Longstay(plist, count, num);
             }
         } else if (menu == 11) { // 결제 청구
             listInfo(plist, index);
