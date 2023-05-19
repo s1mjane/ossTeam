@@ -218,7 +218,7 @@ void DiagsaveData(Patient *p[], int count) {
 
     for (int i = 0; i<count; i++) {
         if(p[i]->diagcheck2 == 1) {
-            fprintf(fp, "%s\n%s\n%s\n%s\n%s\n%s\n", p[i]->name, p[i]->diagnosis, p[i]->treatment, p[i]->recommendation, p[i]->medicine, p[i]->needSurgery);
+            fprintf(fp, "%s\n%s\n%s\n%s\n%s\n%s\n%d\n", p[i]->name, p[i]->diagnosis, p[i]->treatment, p[i]->recommendation, p[i]->medicine, p[i]->needSurgery, p[i]->surgerycheck);
         }
     } 
     fclose(fp);
@@ -278,7 +278,7 @@ int DiagloadData(Patient *p[], int count) {
     fp = fopen("diagnosis.txt", "rt"); // 읽어오는 용도로 파일 오픈
  
     if (fp == NULL) {
-		printf("==> 저장된 진단서 파일이 없습니다.\n");
+		printf("진단서 파일 로드 중\n==> 저장된 진단서 파일이 없습니다.\n");
 		return i;
 	}
 
@@ -288,14 +288,14 @@ int DiagloadData(Patient *p[], int count) {
             break; // 파일 끝을 만났을 때
         }
 
-        if(p[i]->diagcheck2 != 1) {
+        if(p[i]->diagcheck2 != 1) { // 진단서 작성되지 않은 경우
             continue;
         }
 
         fgets(namecheck, sizeof(namecheck), fp);
         namecheck[strlen(namecheck)-1] = '\0';
     
-        if(strcmp(namecheck, p[i]->name) == 0) {
+        if(strcmp(namecheck, p[i]->name) == 0) { // 같은 이름이 있을 때
             fgets(p[i]->diagnosis, sizeof(p[i]->diagnosis), fp);
             p[i]->diagnosis[strlen(p[i]->diagnosis)-1] = '\0';
 
@@ -323,7 +323,7 @@ int DiagloadData(Patient *p[], int count) {
         }
     }
     fclose(fp);
-    printf("진단서 파일 파일 로드 중\n=> 로딩 성공!\n\n");
+    printf("진단서 파일 로드 중\n=> 로딩 성공!\n\n");
     return countdiag;
 }
 
@@ -568,6 +568,7 @@ int createbill(Patient *p[]) {
 int pay(Patient *p[], int count, int num){
     int way = 0;
     printf("=== %s 환자 결제창 ===\n", p[num-1]->name);
+    printf("결제 금액 : %d", p[num-1]->totalfee);
     printf("결제 방법(카드:1/현금:2) : ");
     scanf("%d", &way);
     // 결제 완료 (메뉴1번의 세부조회정보에서 표시)
@@ -638,7 +639,7 @@ int main(void){
             }
         }
         else if (menu == 3) { // 환자 정보 수정 
-            if (count < 1) printf("=> 수정할 데이터가 없습니다.\n\n");
+            if (count < 1) printf("=> 수정할 데이터가 없습니다.(현재 데이터 0개)\n\n");
             else {
                 listInfo(plist, index);
                 int num = selectNum();
@@ -650,7 +651,7 @@ int main(void){
             }
         }
         else if (menu == 4) { // 환자 정보 삭제 
-            if (count < 1) printf("=> 삭제할 데이터가 없습니다.\n\n");
+            if (count < 1) printf("=> 삭제할 데이터가 없습니다.(현재 데이터 0개)\n\n");
             else {
                 listInfo(plist, index);
                 int num = selectNum();
@@ -718,8 +719,11 @@ int main(void){
                 Longstay(plist, count, num); // 입원 수속
             }
         } else if (menu == 11) { // 결제 청구
-            listInfo(plist, index);
-            createbill(plist);
+            if (count < 1) printf("=> 결제 청구할 화자가 없습니다.(현재 데이터 0개)\n");
+            else {
+                listInfo(plist, index);
+                createbill(plist);
+            }
 
         } else if (menu == 12) { // 결제
             if (count < 1) printf("=> 처리할 결제 정보가 없습니다.(현재 데이터 0개)\n\n");
