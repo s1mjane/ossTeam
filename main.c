@@ -512,9 +512,20 @@ void Longstay(Patient *p[], int count, int num) {
 
 // [for 메뉴 10번] 수술 예약 추가시 날짜 가능 확인 여부 조회하는 함수
 int isAvailableDate(Patient *p[], int count, int date) {
+    struct tm *t;
+    time_t now = time(NULL);
+    t = localtime(&now);
+    int nowdate;
+
     for (int i=0; i<count; i++) {
         if (p[i]==NULL) continue;
         if (date == p[i]->surgeryDate) return 0;
+    }
+
+    nowdate = (t->tm_year+1900)*10000+(t->tm_mon+1)*100+t->tm_mday;
+
+    if((nowdate - date) > 0) {
+        return -1;
     }
     return 1; // 겹치는 날짜 없을 때 1 리턴
 }
