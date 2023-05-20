@@ -26,7 +26,7 @@ typedef struct { // 환자 정보 구조체
     int surgerycheck; //수술 진행 여부
     int longstay; // 입원 기간
     int room; // 몇인실
-    int longstaycheck;
+    int longstaycheck; // 입원 여부
 
     // 결제 정보
     int medicalfee; // 진료비
@@ -56,26 +56,45 @@ int OnereadInfo(Patient p, int infonum) {
     int len = stringLength(p.address);
 
     if(p.diagcheck2 == 1) {
-        strcpy(diag, "있음");
+        strcpy(diag, "O");
     } else {
-        strcpy(diag, "없음");
+        strcpy(diag, "X");
     }
 
-    if (len <= 16) {
-        if (p.surgeryDate == 0) printf("%s\t%s\t%s\t\t\t\t\t%s\t\t%d\t\t%s\n", p.name, p.phone, p.address, diag, p.surgeryDate, p.billok);
-        else printf("%s\t%s\t%s\t\t\t\t\t%s\t%d\t\t%s\n", p.name, p.phone, p.address, diag, p.surgeryDate, p.billok);
-    } else if (len <= 32) {
-        if (p.surgeryDate == 0) printf("%s\t%s\t%s\t\t\t\t%s\t\t%d\t\t%s\n", p.name, p.phone, p.address, diag, p.surgeryDate, p.billok);
-        else printf("%s\t%s\t%s\t\t\t\t\t%s\t%d\t\t%s\n", p.name, p.phone, p.address, diag, p.surgeryDate, p.billok);
-    } else if (len <= 48) {
-        if (p.surgeryDate == 0) printf("%s\t%s\t%s\t\t\t%s\t\t%d\t\t%s\n", p.name, p.phone, p.address, diag, p.surgeryDate, p.billok);
-        else printf("%s\t%s\t%s\t\t\t\t\t%s\t%d\t\t%s\n", p.name, p.phone, p.address, diag, p.surgeryDate, p.billok);
-    } else if (len <= 64) {
-        if (p.surgeryDate == 0) printf("%s\t%s\t%s\t\t%s\t\t%d\t\t%s\n", p.name, p.phone, p.address, diag, p.surgeryDate, p.billok);
-        else printf("%s\t%s\t%s\t\t\t\t\t%s\t%d\t\t%s\n", p.name, p.phone, p.address, diag, p.surgeryDate, p.billok);
-    } else if (len <= 96) {
-        if (p.surgeryDate == 0) printf("%s\t%s\t%s\t%s\t\t%d\t\t%s\n", p.name, p.phone, p.address, diag, p.surgeryDate, p.billok);
-        else printf("%s\t%s\t%s\t\t\t\t\t%s\t%d\t\t%s\n", p.name, p.phone, p.address, diag, p.surgeryDate, p.billok);
+    if(p.surgerycheck == 1) {
+        if (len <= 16) {
+            if (p.surgeryDate == 0) printf("%s\t%s\t%s\t\t\t\t\t%s\t\t%d\t\t%s\n", p.name, p.phone, p.address, diag, p.surgeryDate, p.billok);
+            else printf("%s\t%s\t%s\t\t\t\t\t%s\t%d\t\t%s\n", p.name, p.phone, p.address, diag, p.surgeryDate, p.billok);
+        } else if (len <= 32) {
+            if (p.surgeryDate == 0) printf("%s\t%s\t%s\t\t\t\t%s\t\t%d\t\t%s\n", p.name, p.phone, p.address, diag, p.surgeryDate, p.billok);
+            else printf("%s\t%s\t%s\t\t\t\t\t%s\t%d\t\t%s\n", p.name, p.phone, p.address, diag, p.surgeryDate, p.billok);
+        } else if (len <= 48) {
+            if (p.surgeryDate == 0) printf("%s\t%s\t%s\t\t\t%s\t\t%d\t\t%s\n", p.name, p.phone, p.address, diag, p.surgeryDate, p.billok);
+            else printf("%s\t%s\t%s\t\t\t\t\t%s\t%d\t\t%s\n", p.name, p.phone, p.address, diag, p.surgeryDate, p.billok);
+        } else if (len <= 64) {
+            if (p.surgeryDate == 0) printf("%s\t%s\t%s\t\t%s\t\t%d\t\t%s\n", p.name, p.phone, p.address, diag, p.surgeryDate, p.billok);
+            else printf("%s\t%s\t%s\t\t\t\t\t%s\t%d\t\t%s\n", p.name, p.phone, p.address, diag, p.surgeryDate, p.billok);
+        } else if (len <= 96) {
+            if (p.surgeryDate == 0) printf("%s\t%s\t%s\t%s\t\t%d\t\t%s\n", p.name, p.phone, p.address, diag, p.surgeryDate, p.billok);
+            else printf("%s\t%s\t%s\t\t\t\t\t%s\t%d\t\t%s\n", p.name, p.phone, p.address, diag, p.surgeryDate, p.billok);
+        }
+    } else {
+        if (len <= 16) {
+            if (p.surgeryDate == 0) printf("%s\t%s\t%s\t\t\t\t\t%s\t\t%s\t\t%s\n", p.name, p.phone, p.address, diag, "X", p.billok);
+            else printf("%s\t%s\t%s\t\t\t\t\t%s\t%s\t\t%s\n", p.name, p.phone, p.address, diag, "X", p.billok);
+        } else if (len <= 32) {
+            if (p.surgeryDate == 0) printf("%s\t%s\t%s\t\t\t\t%s\t\t%s\t\t%s\n", p.name, p.phone, p.address, diag, "X", p.billok);
+            else printf("%s\t%s\t%s\t\t\t\t\t%s\t%s\t\t%s\n", p.name, p.phone, p.address, diag, "X", p.billok);
+        } else if (len <= 48) {
+            if (p.surgeryDate == 0) printf("%s\t%s\t%s\t\t\t%s\t\t%s\t\t%s\n", p.name, p.phone, p.address, diag, "X", p.billok);
+            else printf("%s\t%s\t%s\t\t\t\t\t%s\t%s\t\t%s\n", p.name, p.phone, p.address, diag, "X", p.billok);
+        } else if (len <= 64) {
+            if (p.surgeryDate == 0) printf("%s\t%s\t%s\t\t%s\t\t%s\t\t%s\n", p.name, p.phone, p.address, diag, "X", p.billok);
+            else printf("%s\t%s\t%s\t\t\t\t\t%s\t%s\t\t%s\n", p.name, p.phone, p.address, diag, "X", p.billok);
+        } else if (len <= 96) {
+            if (p.surgeryDate == 0) printf("%s\t%s\t%s\t%s\t\t%s\t\t%s\n", p.name, p.phone, p.address, diag, "X", p.billok);
+            else printf("%s\t%s\t%s\t\t\t\t\t%s\t%s\t\t%s\n", p.name, p.phone, p.address, diag, "X", p.billok);
+        }
     }
     return 1;
 }
@@ -139,7 +158,6 @@ int addInfo(Patient *p){
     printf("증상: ");
     scanf(" %[^\n]s", p->symptom);
     ch = getchar();
-    // strcpy(p->diagcheck, "X");
     strcpy(p->billok, "X");
     p->diagcheck2 = 0;
     p->longstaycheck = 0;
