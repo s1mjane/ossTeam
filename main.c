@@ -120,18 +120,22 @@ int addInfo(Patient *p){
 
     printf("환자 이름: ");
     scanf("%s", p->name);
+    getchar();
     printf("성별(M or F): ");
     scanf("%s", p->sex);
+    getchar();
     printf("생년월일은(8자리): ");
     scanf("%d", &p->birthday);
     getchar();
     printf("핸드폰 번호(숫자만): ");
     scanf("%s", p->phone);
-    printf("주소: ");
     getchar();
+    printf("주소: ");
     scanf(" %[^\n]s", p->address);
+    getchar();
     printf("진료과: ");
     scanf("%s", p->department);
+    getchar();
     printf("증상: ");
     scanf(" %[^\n]s", p->symptom);
     ch = getchar();
@@ -164,18 +168,22 @@ int updateInfo(Patient *p){
 
     printf("환자 이름: ");
     scanf("%s", p->name);
+    getchar();
     printf("성별(M or F): ");
     scanf("%s", p->sex);
+    getchar();
     printf("생년월일은(8자리): ");
     scanf("%d", &p->birthday);
     getchar();
     printf("핸드폰 번호(숫자만): ");
     scanf("%s", p->phone);
-    printf("주소: ");
     getchar();
+    printf("주소: ");
     scanf(" %[^\n]s", p->address);
+    getchar();
     printf("진료과: ");
     scanf("%s", p->department);
+    getchar();
     printf("증상: ");
     scanf(" %[^\n]s", p->symptom);
     ch = getchar();
@@ -333,6 +341,7 @@ void searchName(Patient *p[], int count) {
     char search[20];
     printf("=> 검색할 이름 : ");
     scanf("%s", search);
+    getchar();
     printf("===================================== 리스트 검색 조회 결과 =====================================\n");
     printf("%s %s\t%s\t%s\t%s\t%s\t%s\t%s\t\t%s\n", "No", "Name ", "Sex", "Age", "Birthday   ", "PhoneNumber  ", "Address", "Department", "Symptom");
     printf("==============================================================================================\n");
@@ -346,7 +355,7 @@ void searchName(Patient *p[], int count) {
             }
         }
     }
-    if (pcount == 0) printf("=> 검색된 데이터가 없습니다.\n");
+    if (pcount == 0) printf("\n=> 검색된 데이터가 없습니다.\n");
     printf("\n");
 }
 
@@ -357,6 +366,7 @@ void searchDepartment(Patient *p[], int count) {
 
     printf("=> 검색할 과 이름(ex: 내과/외과/피부과): ");
     scanf("%s", search);
+    getchar();
 
     printf("\n*** %s 환자 리스트 ***\n", search);
     printf("%s %s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n", "No", "Name ", "Sex", "Age", "Birthday   ", "PhoneNumber  ", "Address", "Department", "Symptom");
@@ -372,7 +382,7 @@ void searchDepartment(Patient *p[], int count) {
         }
     }
     if(check == 0) {
-        printf("=> 검색된 데이터가 없습니다.\n");
+        printf("\n=> 검색된 데이터가 없습니다.\n");
     }
 }
 
@@ -503,6 +513,7 @@ int surgeryList(Patient *p[], int count, int num) {
     // 수술 가능 날짜 확인
         printf("수술날짜(8자리) : ");
         scanf("%d", &ok.surgeryDate);
+        getchar();
         if (count > 0) {
             if (isAvailableDate(p, count, ok.surgeryDate) == 1) {
                 p[num-1]->surgeryDate = ok.surgeryDate;
@@ -571,6 +582,7 @@ int pay(Patient *p[], int count, int num){
     printf("결제 금액 : %d", p[num-1]->totalfee);
     printf("결제 방법(카드:1/현금:2) : ");
     scanf("%d", &way);
+    getchar();
     // 결제 완료 (메뉴1번의 세부조회정보에서 표시)
     if (way == 1 || way == 2) {
         strcpy(p[num-1]->billok, "O");
@@ -667,6 +679,7 @@ int main(void){
                     int deleteok;
                     printf("=> 정말로 삭제하시겠습니까? (삭제:1) : ");
                     scanf("%d", &deleteok);
+                    getchar();
                     printf("\n");
                     if (deleteok == 1) count -= deleteInfo(plist[num-1]);
                     else continue;
@@ -703,6 +716,7 @@ int main(void){
             }
 
         } else if (menu == 9) { // 진단서 조회
+        //printf("%d\n",diagcount);
             if(diagcount < 1) printf("=> 진단서 작성이 완료된 환자가 없습니다.\n\n");
             else{
                 Diagnosislist(plist, index);
@@ -713,8 +727,10 @@ int main(void){
             else {          
                 listInfo(plist, index);
                 int num;
-                printf("=> 몇 번 환자의 수술 예약을 추가하시겠습니까? ");
+                printf("=> 몇 번 환자의 수술 예약을 추가하시겠습니까?(취소:0) ");
                 scanf("%d", &num);
+                getchar();
+                if (num == 0) continue;
                 if (surgeryList(plist, index, num) != 1) continue; 
                 Longstay(plist, count, num); // 입원 수속
             }
