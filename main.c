@@ -499,16 +499,15 @@ void Diagnosislist(Patient *p[], int count) {
 // [for 메뉴 10번] 수술 예약 추가시 입원 수속 
 void Longstay(Patient *p[], int count, int num) {
 
-        printf("\n=== 입원 수속 ===\n");
-        printf("며칠동안 입원하실 예정입니까? : ");
-        scanf("%d", &p[num-1]->longstay);
-        getchar();
-        printf("\n[1인실 : 10만원 / 2인실 : 2만원 / 4인실 : 5000원]\n");
-        printf("몇인실을 원하십니까? (숫자만) : ");
-        scanf("%d", &p[num-1]->room);
-        getchar();
-        p[num-1]->longstaycheck = 1;
-        printf("%d\n",p[num-1]->longstaycheck);
+    printf("\n=== 입원 수속 ===\n");
+    printf("며칠동안 입원하실 예정입니까? : ");
+    scanf("%d", &p[num-1]->longstay);
+    getchar();
+    printf("\n[1인실 : 10만원 / 2인실 : 2만원 / 4인실 : 5000원]\n");
+    printf("몇인실을 원하십니까? (숫자만) : ");
+    scanf("%d", &p[num-1]->room);
+    getchar();
+    p[num-1]->longstaycheck = 1;
 }
 
 // [for 메뉴 10번] 수술 예약 추가시 날짜 가능 확인 여부 조회하는 함수
@@ -567,7 +566,8 @@ int createbill(Patient *p[]) {
         return 0;
     }
 
-    printf("\n진료비 : ");
+    printf("\n항목에 따른 결제 금액을 입력해주세요.\n");
+    printf("진료비 : ");
     scanf("%d", &p[num-1]->medicalfee);
     getchar();
 
@@ -575,6 +575,8 @@ int createbill(Patient *p[]) {
         printf("수술비 : ");
         scanf("%d", &p[num-1]->surgeryfee);
         getchar();
+    } else {
+        printf("수술비 : 0\n");
     }
 
     if(p[num-1]->longstaycheck == 1) {
