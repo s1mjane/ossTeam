@@ -355,7 +355,7 @@ void searchDepartment(Patient *p[], int count) {
     for(int i=0; i<count; i++) {
         if(p[i] == NULL)
             continue;
-        if(strstr(p[i]->department, search)) {
+        if(strcmp(p[i]->department, search)==0) {
             printf("%2d ", i+1);
             readInfo(*p[i]);
             check++;
