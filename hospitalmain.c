@@ -39,7 +39,7 @@ int main(void){
             else {
                 plist[index] = (Patient *)malloc(sizeof(Patient));
                 count += addInfo(plist[index++]);
-                diagcount++;
+                //diagcount++;
             }
         }
         else if (menu == 3) { // 환자 정보 수정 
