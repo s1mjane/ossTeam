@@ -1,7 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h> // 동적할당
-#include <string.h> // strstr
-#include <time.h>
 #include "hospital.h"
 
 int main(void){
