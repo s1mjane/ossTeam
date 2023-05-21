@@ -133,7 +133,7 @@ int main(void){
                 Longstay(plist, num); // 입원 수속
             }
         } else if (menu == 11) { // 결제 청구
-            if (count < 1) printf("=> 결제 청구할 화자가 없습니다.(현재 데이터 0개)\n");
+            if (count < 1) printf("=> 결제 청구할 환자가 없습니다.(현재 데이터 0개)\n");
             else {
                 listInfo(plist, index);
                 createbill(plist);
