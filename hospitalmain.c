@@ -50,6 +50,9 @@ int main(void){
                 if(num == 0){
                     printf("=> 취소되었습니다.\n\n");
                     continue;
+                } else if(num < 0 || num > count || plist[num-1]->birthday == -1) {
+                    printf("=> 해당환자가 없습니다.\n");
+                    continue;
                 }
                 updateInfo(plist[num-1]);
             }
@@ -62,6 +65,9 @@ int main(void){
 
                 if(num == 0){
                     printf("=> 취소되었습니다.\n\n");
+                    continue;
+                } else if(num < 0 || num > count) {
+                    printf("=> 해당환자가 없습니다.\n");
                     continue;
                 }
 
@@ -105,6 +111,9 @@ int main(void){
                 if(num == 0){
                     printf("=> 취소되었습니다.\n");
                     continue;
+                } else if(num < 0 || num > count || plist[num-1]->birthday == -1) {
+                    printf("=> 해당환자가 없습니다.\n");
+                    continue;
                 }
                 writeDiagnosis(plist[num-1]);
                 diagcount++;
@@ -128,6 +137,9 @@ int main(void){
                 if (num == 0) {
                     printf("취소되었습니다.\n");
                     continue;
+                } else if(num < 0 || num > count || plist[num-1]->birthday == -1) {
+                    printf("=> 해당환자가 없습니다.\n");
+                    continue;
                 }
                 if (surgeryList(plist, index, num) != 1) continue; 
                 Longstay(plist, num); // 입원 수속
@@ -136,7 +148,7 @@ int main(void){
             if (count < 1) printf("=> 결제 청구할 환자가 없습니다.(현재 데이터 0개)\n");
             else {
                 listInfo(plist, index);
-                createbill(plist);
+                createbill(plist, index);
             }
 
         } else if (menu == 12) { // 결제
@@ -149,7 +161,7 @@ int main(void){
                 if(num == 0) {
                     printf("취소되었습니다.\n");
                     continue;
-                } else if(num > count || plist[num-1]->birthday == -1) {
+                } else if(num > count || plist[num-1]->birthday == -1 || num < 0) {
                     printf("해당 환자의 데이터가 없습니다.\n");
                     continue;
                 } else if(pay(plist, num) != 1) continue; 
