@@ -164,6 +164,9 @@ int main(void){
                 } else if(num > count || num < 0 || plist[num-1]->birthday == -1 ) {
                     printf("해당 환자의 데이터가 없습니다.\n");
                     continue;
+                } else if(plist[num-1]->totalfee <= 0) { 
+                    printf("진료비가 입력되지 않았습니다.\n");
+                    continue;
                 } else if(pay(plist, num) != 1) continue; 
             }
         }
