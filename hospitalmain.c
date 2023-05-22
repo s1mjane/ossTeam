@@ -161,7 +161,7 @@ int main(void){
                 if(num == 0) {
                     printf("취소되었습니다.\n");
                     continue;
-                } else if(num > count || plist[num-1]->birthday == -1 || num < 0) {
+                } else if(num > count || num < 0 || plist[num-1]->birthday == -1 ) {
                     printf("해당 환자의 데이터가 없습니다.\n");
                     continue;
                 } else if(pay(plist, num) != 1) continue; 
