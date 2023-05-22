@@ -526,7 +526,7 @@ int surgeryList(Patient *p[], int count, int num) {
 }
 
 // [메뉴 11번] 결제 청구
-int createbill(Patient *p[]) {
+int createbill(Patient *p[], int  count) {
     int num;
     int billofroom = 0;
 
@@ -536,6 +536,9 @@ int createbill(Patient *p[]) {
 
     if(num == 0) {
         printf("=> 취소되었습니다.\n");
+        return 0;
+    } else if(num < 0 || num > count || p[num-1]->birthday == -1) {
+        printf("=> 해당환자가 없습니다.\n");
         return 0;
     }
 
