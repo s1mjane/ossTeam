@@ -102,7 +102,7 @@ int isAvailableDate(Patient *p[], int count, int date);
 int surgeryList(Patient *p[], int count, int num);
 
 // [메뉴 11번] 결제 청구
-int createbill(Patient *p[]);
+int createbill(Patient *p[], int count);
 
 // [메뉴 12번] 결제
 int pay(Patient *p[], int num);
