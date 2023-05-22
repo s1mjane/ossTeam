@@ -325,13 +325,11 @@ void searchName(Patient *p[], int count) {
     printf("%s %s\t%s\t%s\t%s\t%s\t%s\n", "No", "Name ", "Sex", "Age", "Birthday   ", "Department", "Symptom");
     printf("===========================================================================================\n");
     for (int i=0; i<count; i++) {
-        if (p[i] == NULL) continue;
-        if (p[i]!= NULL) {
-            if (strstr(p[i]->name, search)) { 
-                printf("%2d\t", i+1);
-                readInfo(*p[i]);
-                pcount++;
-            }
+        if (p[i] == NULL || p[i]->birthday == -1) continue;
+        if (strstr(p[i]->name, search)) { 
+            printf("%2d\t", i+1);
+            readInfo(*p[i]);
+            pcount++;
         }
     }
     if (pcount == 0) printf("\n=> 검색된 데이터가 없습니다.\n");
@@ -483,7 +481,7 @@ int isAvailableDate(Patient *p[], int count, int date) {
     int nowdate;
 
     for (int i=0; i<count; i++) {
-        if (p[i]==NULL) continue;
+        if (p[i]==NULL || p[i]->birthday == -1) continue;
         if (date == p[i]->surgeryDate) return 0;
     }
 
