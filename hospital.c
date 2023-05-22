@@ -353,7 +353,7 @@ void searchDepartment(Patient *p[], int count) {
     printf("=======================================================================================\n");
 
     for(int i=0; i<count; i++) {
-        if(p[i] == NULL)
+        if(p[i] == NULL || p[i]->birthday == -1 )
             continue;
         if(strcmp(p[i]->department, search)==0) {
             printf("%2d ", i+1);
